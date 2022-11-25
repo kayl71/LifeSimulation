@@ -1,5 +1,7 @@
-import pygame as pg
+import time
 
+import pygame as pg
+import Display
 class Core:
 
     def __init__(self):
@@ -12,7 +14,6 @@ class Core:
         self.screen = pg.display.set_mode((width, height))
 
     def run(self):
-
         self.start()
         time_now = pg.time.get_ticks()
         time_last_update = time_now
@@ -21,19 +22,31 @@ class Core:
         FPS = 60
 
         while self.alive:
+            self.handle_events(pg.event.get())
+
             if self.running and time_now - time_last_update > 1000 / UPS:
+                time_last_update = time_now
                 self.update()
+
             if time_now - time_last_render > 1000 / FPS:
+                time_last_render = time_now
                 self.render()
 
+            time.sleep(1/60)
 
+        pg.quit()
 
+    def handle_events(self, events):
+        for event in events:
+            if event.type == pg.QUIT:
+                self.alive = False
 
     def render(self):
-        pass
+        Display.render(self.screen, self.creatures)
 
     def update(self):
-        pass
+        for creature in self.creatures:
+            creature.update()
 
     def start(self):
         self.running = True
