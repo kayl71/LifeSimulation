@@ -44,9 +44,9 @@ class Core:
         for event in events:
             if event.type == pg.QUIT:
                 self.alive = False
-            elif event.type == pg.KEYDOWN:
+            if event.type == pg.KEYDOWN:
                 self.camera.move()
-            elif event.type == pg.MOUSEBUTTONDOWN:
+            if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 4:
                     self.camera.scale_plus()
                 elif event.button == 5:
