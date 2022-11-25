@@ -10,7 +10,7 @@ class Core:
 
     def __init__(self):
         self.creatures = [Creature.Prey(color=(255,255,255), direction=100, hunger=0, thurst=0,sleep=0,
-                                          koef_take_sun=0,koef_take_plant=0,koef_take_meat=0, size=20, speed=5,
+                                          koef_take_sun=0,koef_take_plant=0,koef_take_meat=0, size=20, speed=50,
                                           x=100, y=200)]
         self.alive = True
         self.running = False
@@ -23,23 +23,21 @@ class Core:
         self.start()
         time_now = pg.time.get_ticks()
         time_last_update = time_now
-        time_last_render = time_now
-        UPS = 4
-        FPS = 60
+        time_last_fixed_update = time_now
+        FUPS = 4    # Fixed Update Per Second
+        UPS = 60    # Update Per Second
 
         while self.alive:
             time_now = pg.time.get_ticks()
             self.handle_events(pg.event.get())
 
-            if self.running and time_now - time_last_update > 1000 / UPS:
+            if self.running and time_now - time_last_fixed_update > 1000 / FUPS:
+                time_last_fixed_update = time_now
+
+            if time_now - time_last_update > 1000 / UPS:
                 self.update((time_now - time_last_update)/1000)
-                time_last_update = time_now
-
-            if time_now - time_last_render > 1000 / FPS:
                 self.render()
-                time_last_render = time_now
-
-            time.sleep(1/60)
+                time_last_update = time_now
 
         pg.quit()
 
@@ -47,6 +45,9 @@ class Core:
         for event in events:
             if event.type == pg.QUIT:
                 self.alive = False
+
+    def fixed_update(self):
+        pass
 
     def render(self):
         Display.render(self.screen, self.creatures)
