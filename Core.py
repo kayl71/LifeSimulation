@@ -4,6 +4,8 @@ import pygame as pg
 
 import Creature
 import Display
+
+
 class Core:
 
     def __init__(self):
@@ -30,13 +32,12 @@ class Core:
             self.handle_events(pg.event.get())
 
             if self.running and time_now - time_last_update > 1000 / UPS:
+                self.update((time_now - time_last_update)/1000)
                 time_last_update = time_now
-                self.update()
 
             if time_now - time_last_render > 1000 / FPS:
-                time_last_render = time_now
                 self.render()
-                print('aa')
+                time_last_render = time_now
 
             time.sleep(1/60)
 
@@ -50,9 +51,9 @@ class Core:
     def render(self):
         Display.render(self.screen, self.creatures)
 
-    def update(self):
+    def update(self, deltaTime):
         for creature in self.creatures:
-            creature.update()
+            creature.update(deltaTime)
 
     def start(self):
         self.running = True
