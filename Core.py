@@ -1,12 +1,11 @@
 import pygame as pg
 
-running = False
-
 class Core:
 
     def __init__(self):
         self.creatures = []
         self.alive = True
+        self.running = False
         pg.init()
         width = 800
         height = 800
