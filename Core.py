@@ -12,6 +12,7 @@ class Core:
         self.creatures = [Creature.Prey(color=(255,255,255), direction=100, hunger=0, thurst=0,sleep=0,
                                           koef_take_sun=0,koef_take_plant=0,koef_take_meat=0, size=20, speed=50,
                                           x=100, y=200)]
+        self.camera = Display.Camera(0,0)
         self.alive = True
         self.running = False
         pg.init()
@@ -39,18 +40,21 @@ class Core:
                 self.render()
                 time_last_update = time_now
 
+
         pg.quit()
 
     def handle_events(self, events):
         for event in events:
             if event.type == pg.QUIT:
                 self.alive = False
+            elif event.type == pg.KEYDOWN:
+                self.camera.move()
 
     def fixed_update(self):
         pass
 
     def render(self):
-        Display.render(self.screen, self.creatures)
+        Display.render(self.screen, self.creatures, self.camera)
 
     def update(self, deltaTime):
         for creature in self.creatures:
