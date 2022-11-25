@@ -1,4 +1,6 @@
 import math
+
+
 class Creature:
 
     def __init__(self, koef_take_sun, koef_take_meat, koef_take_plant, size, x, y,
@@ -17,12 +19,11 @@ class Creature:
         self.sleep = sleep
 
     def update(self, dt):
-        self.x += self.speed*math.cos(math.radians(self.direction)) * dt
-        self.y += self.speed*math.sin(math.radians(self.direction)) * dt
+        self.x += self.speed * math.cos(math.radians(self.direction)) * dt
+        self.y += self.speed * math.sin(math.radians(self.direction)) * dt
         self.hunger += 1
         self.thurst += 1
         self.sleep += 1
-
 
 
 class Hunter(Creature):
