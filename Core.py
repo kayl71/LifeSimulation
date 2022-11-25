@@ -1,21 +1,25 @@
 import pygame as pg
 
+running = False
 
+class Core:
 
-def main():
-    pg.init()
+    def __init__(self):
+        pg.init()
 
-    #while running:
-    #    pass
+    def render(self):
+        pass
 
-def render():
-    pass
+    def update(self):
+        pass
 
-def update():
-    pass
+    def start(self):
+        self.running = True
+
 
 
 
 
 if __name__ == "__main__":
-    main()
+    core = Core()
+    core.start()
