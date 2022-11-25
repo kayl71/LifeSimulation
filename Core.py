@@ -1,11 +1,15 @@
 import time
 
 import pygame as pg
+
+import Creature
 import Display
 class Core:
 
     def __init__(self):
-        self.creatures = []
+        self.creatures = [Creature.Prey(color=(255,255,255), direction=100, hunger=0, thurst=0,sleep=0,
+                                          koef_take_sun=0,koef_take_plant=0,koef_take_meat=0, size=20, speed=5,
+                                          x=100, y=200)]
         self.alive = True
         self.running = False
         pg.init()
@@ -22,6 +26,7 @@ class Core:
         FPS = 60
 
         while self.alive:
+            time_now = pg.time.get_ticks()
             self.handle_events(pg.event.get())
 
             if self.running and time_now - time_last_update > 1000 / UPS:
@@ -31,6 +36,7 @@ class Core:
             if time_now - time_last_render > 1000 / FPS:
                 time_last_render = time_now
                 self.render()
+                print('aa')
 
             time.sleep(1/60)
 

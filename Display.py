@@ -10,4 +10,5 @@ def render(screen, creatures):
             pg.draw.circle(screen, creature.color, [creature.x, creature.y], creature.size)
         else: # ещё что то
             pass
+        pg.display.update()
 
