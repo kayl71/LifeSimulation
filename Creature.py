@@ -1,6 +1,3 @@
-import pygame as pg
-
-
 class Creature:
 
     def __init__(self, koef_take_sun, koef_take_meat, koef_take_plant, size, x, y, speed, color):
@@ -18,10 +15,8 @@ class Creature:
 
 
 class Hunter(Creature):
-    def render(self, screen):
-        pg.draw.rect(screen, self.color, [self.x, self.y, self.size, self.size])
+    pass
 
 
 class Prey(Creature):
-    def render(self, screen):
-        pg.draw.circle(screen, self.color, [self.x, self.y], self.size)
+    pass
