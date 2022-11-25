@@ -42,7 +42,7 @@ class Core:
                 self.alive = False
 
     def render(self):
-        Display.render(self.screen)
+        Display.render(self.screen, self.creatures)
 
     def update(self):
         for creature in self.creatures:
