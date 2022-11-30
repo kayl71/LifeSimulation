@@ -36,6 +36,7 @@ class Core:
             if time_now - time_last_update > 1000 / UPS:
                 self.update((time_now - time_last_update) / 1000)
                 self.render()
+                self.camera.move()
                 time_last_update = time_now
 
         pg.quit()
@@ -44,8 +45,6 @@ class Core:
         for event in events:
             if event.type == pg.QUIT:
                 self.alive = False
-            if event.type == pg.KEYDOWN:
-                self.camera.move()
             if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 4:
                     self.camera.scale_plus()
