@@ -7,16 +7,18 @@ import Display
 class Core:
 
     def __init__(self):
-        self.creatures = [Creature.Prey(color=(255, 255, 255), direction=100, hunger=0, thurst=0, sleep=0,
+        self.creatures = [Creature.Prey(color=(255, 255, 255), direction=135, hunger=0, thurst=0, sleep=0,
                                         koef_take_sun=0, koef_take_plant=0, koef_take_meat=0, size=20, speed=50,
                                         x=100, y=200)]
         self.alive = True
         self.running = False
         pg.init()
-        self.width = 800
-        self.height = 800
-        self.camera = Display.Camera(self.width//2, self.height//2)
-        self.screen = pg.display.set_mode((self.width, self.height))
+        self.screen_width = 700
+        self.screen_height = 700
+        self.area_width = 2000
+        self.area_height = 2000
+        self.camera = Display.Camera(self.screen_width//2, self.screen_height//2)
+        self.screen = pg.display.set_mode((self.screen_width, self.screen_height))
 
     def run(self):
         self.start()
@@ -36,7 +38,7 @@ class Core:
             if time_now - time_last_update > 1000 / UPS:
                 self.update((time_now - time_last_update) / 1000)
                 self.render()
-                self.camera.move()
+                self.camera.move(self.screen_width, self.screen_height, self.area_width, self.area_height)
                 time_last_update = time_now
 
         pg.quit()
@@ -49,13 +51,13 @@ class Core:
                 if event.button == 4:
                     self.camera.scale_plus()
                 elif event.button == 5:
-                    self.camera.scale_minus()
+                    self.camera.scale_minus(self.screen_width, self.screen_height, self.area_width, self.area_height)
 
     def fixed_update(self):
         pass
 
     def render(self):
-        Display.render(self.screen, self.creatures, self.camera, self.width, self.height)
+        Display.render(self.screen, self.creatures, self.camera, self.screen_width, self.screen_height)
 
     def update(self, deltaTime):
         for creature in self.creatures:
