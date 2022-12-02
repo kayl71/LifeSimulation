@@ -37,6 +37,7 @@ class Creature:
     def eat(self, energy):
         self.energy += energy
 
+
 class Hunter(Creature):
     pass
 
