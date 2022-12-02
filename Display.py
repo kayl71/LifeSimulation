@@ -27,7 +27,7 @@ def render(screen, creatures, camera, width, height):
                            [(creature.x - camera.x) * camera.scale + width / 2,
                             (creature.y - camera.y) * camera.scale + height / 2],
                            (creature.size * camera.scale) + 1)
-        pg.display.update()
+    pg.display.update()
 
 
 class Camera:
