@@ -6,6 +6,10 @@ import GenomeManager
 class Creature:
 
     def __init__(self, size, speed, color, x = 0, y = 0):
+        #, koef_take_sun, koef_take_meat, koef_take_plant, hunger, thurst, sleep):
+        #self.koef_take_sun = koef_take_sun
+        #self.koef_take_meat = koef_take_meat
+        #self.koef_take_plant = koef_take_plant
         self.alive = True
         self.energy = 10
         self.x = x
