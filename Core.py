@@ -4,15 +4,16 @@ import pygame as pg
 
 import Creature
 import Display
-import GenomeManager
+
 
 class Core:
 
     def __init__(self):
-        self.creatures = GenomeManager.CreatePopulation(5)
+        self.creatures = [Creature.Prey(color=(255,255,255), direction=100, hunger=0, thurst=0,sleep=0,
+                                          koef_take_sun=0,koef_take_plant=0,koef_take_meat=0, size=20, speed=50,
+                                          x=100, y=200)]
         self.alive = True
         self.running = False
-        print(self.creatures[0].color)
         pg.init()
         width = 800
         height = 800
@@ -53,18 +54,10 @@ class Core:
 
     def update(self, deltaTime):
         for creature in self.creatures:
-            if creature.is_dead():
-                self.creatures.remove(creature)
-            else:
-                self.addCreatureEnergy(creature)
-                creature.update(deltaTime)
+            creature.update(deltaTime)
 
     def start(self):
         self.running = True
-
-    def addCreatureEnergy(self, creature):
-        energy = (creature.x + creature.y)//10
-        creature.eat(energy)
 
     def stop(self):
         self.running = False
