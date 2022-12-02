@@ -4,14 +4,13 @@ import pygame as pg
 
 import Creature
 import Display
+import GenomeManager
 
 
 class Core:
 
     def __init__(self):
-        self.creatures = [Creature.Prey(color=(255,255,255), direction=100, hunger=0, thurst=0,sleep=0,
-                                          koef_take_sun=0,koef_take_plant=0,koef_take_meat=0, size=20, speed=50,
-                                          x=100, y=200)]
+        self.creatures = GenomeManager.CreatePopulation(5)
         self.alive = True
         self.running = False
         pg.init()
