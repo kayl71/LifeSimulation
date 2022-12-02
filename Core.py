@@ -2,6 +2,7 @@ import pygame as pg
 
 import Creature
 import Display
+import FoodManager
 import GenomeManager
 
 
@@ -10,6 +11,7 @@ class Core:
     def __init__(self):
         #self.creatures = GenomeManager.CreatePopulation(1)
         self.creatures = [Creature.Creature(20, 20, (255,255,255), 0, 0)]
+        self.food = FoodManager.FoodManager()
         self.alive = True
         self.running = False
         pg.init()
@@ -39,6 +41,7 @@ class Core:
                 self.update((time_now - time_last_update) / 1000)
                 self.render()
                 self.camera.move(self.screen_width, self.screen_height, self.area_width, self.area_height)
+                self.food.update(time_now)
                 time_last_update = time_now
 
         pg.quit()
@@ -57,7 +60,7 @@ class Core:
         pass
 
     def render(self):
-        Display.render(self.screen, self.creatures, self.camera, self.screen_width, self.screen_height)
+        Display.render(self.screen, self.creatures, self.food, self.camera, self.screen_width, self.screen_height)
 
     def update(self, deltaTime):
         for creature in self.creatures:

@@ -2,7 +2,7 @@ import pygame as pg
 import Creature
 
 
-def render(screen, creatures, camera, width, height):
+def render(screen, creatures, food, camera, width, height):
     screen.fill((0, 0, 0))
     pg.draw.rect(screen, (255, 0, 0), [(-990 - camera.x) * camera.scale + width / 2,
                                        (-990 - camera.y) * camera.scale + height / 2,
@@ -27,6 +27,12 @@ def render(screen, creatures, camera, width, height):
                            [(creature.x - camera.x) * camera.scale + width / 2,
                             (creature.y - camera.y) * camera.scale + height / 2],
                            (creature.size * camera.scale) + 1)
+
+    for coord_food in food.food:
+        pg.draw.circle(screen, (0, 255, 0),
+                        [(coord_food[0] - camera.x) * camera.scale + width / 2,
+                        (coord_food[1] - camera.y) * camera.scale + height / 2],
+                        (food.food_size * camera.scale) + 1)
     pg.display.update()
 
 
