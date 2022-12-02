@@ -31,6 +31,7 @@ class Creature:
         else:
             self.move_to(point[0], point[1], dt)
         self.energy -= self.energy_loss * dt
+
         if self.energy <= 0:
             self.alive = 0
 
