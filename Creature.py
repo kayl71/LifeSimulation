@@ -46,7 +46,6 @@ class Creature:
             k = -1
         if not math.fabs(self.direction - angle) < 1:
             self.rotate(k * 3 * self.speed * dt)
-        print(angle, self.direction, math.fabs(self.direction - angle))
 
 
 class Hunter(Creature):

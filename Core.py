@@ -4,6 +4,7 @@ import Creature
 import Display
 import FoodManager
 import GenomeManager
+import Menu
 
 
 class Core:
@@ -14,6 +15,7 @@ class Core:
         self.food = FoodManager.FoodManager()
         self.alive = True
         self.running = False
+        self.existing = False
         pg.init()
         self.screen_width = 700
         self.screen_height = 700
@@ -21,9 +23,11 @@ class Core:
         self.area_height = 2000
         self.camera = Display.Camera(self.screen_width//2, self.screen_height//2)
         self.screen = pg.display.set_mode((self.screen_width, self.screen_height))
+        self.fullscreen_menu = Menu.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
 
     def run(self):
-        self.start()
+        #self.start()
+        menu, box, timer = self.fullscreen_menu.render()
         time_now = pg.time.get_ticks()
         time_last_update = time_now
         time_last_fixed_update = time_now
@@ -32,12 +36,13 @@ class Core:
 
         while self.alive:
             time_now = pg.time.get_ticks()
-            self.handle_events(pg.event.get())
+            self.handle_events(pg.event.get(), menu)
+            self.existing = self.fullscreen_menu.running
 
             if self.running and time_now - time_last_fixed_update > 1000 / FUPS:
                 time_last_fixed_update = time_now
 
-            if time_now - time_last_update > 1000 / UPS:
+            if self.existing and time_now - time_last_update > 1000 / UPS:
                 self.update((time_now - time_last_update) / 1000)
                 self.render()
                 self.camera.move(self.screen_width, self.screen_height, self.area_width, self.area_height)
@@ -46,8 +51,9 @@ class Core:
 
         pg.quit()
 
-    def handle_events(self, events):
+    def handle_events(self, events, menu):
         for event in events:
+            menu.react(event)
             if event.type == pg.QUIT:
                 self.alive = False
             if event.type == pg.MOUSEBUTTONDOWN:
@@ -65,6 +71,12 @@ class Core:
     def update(self, deltaTime):
         for creature in self.creatures:
             creature.update(deltaTime)
+
+    def begin(self):
+        self.existing = True
+
+    def end(self):
+        self.existing = False
 
     def start(self):
         self.running = True
