@@ -14,7 +14,7 @@ class Genome:
 
 
 def CreateCreature():
-    return Creature.Creature(random.randint(5, 10), random.randint(1, 5), (255, 255, 255), random.randint(10, 100), random.randint(10, 100))
+    return Creature.Creature(random.randint(10, 20), random.randint(30, 50), (255, 255, 255), random.randint(10, 100), random.randint(10, 100))
 
 def CreatePopulation(len : int):
     population = [0]*len
