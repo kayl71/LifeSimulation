@@ -8,8 +8,8 @@ import GenomeManager
 class Core:
 
     def __init__(self):
-        self.creatures = GenomeManager.CreatePopulation(3)
-
+        #self.creatures = GenomeManager.CreatePopulation(1)
+        self.creatures = [Creature.Creature(20, 20, (255,255,255), 0, 0)]
         self.alive = True
         self.running = False
         pg.init()

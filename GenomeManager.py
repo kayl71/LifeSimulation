@@ -1,15 +1,5 @@
 import random
-
 import Creature
-
-class Genome:
-
-    def __init__(self):
-        pass
-
-    def out(self, distant, direction):
-        pass
-
 
 
 

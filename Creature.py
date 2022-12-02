@@ -23,12 +23,30 @@ class Creature:
         self.energy -= dt * self.energy_loss
         if self.energy <= 0:
             self.alive = False
+        self.move_to(200, 200, dt)
 
     def is_dead(self):
         return not self.alive
 
+    def rotate(self, angle):
+        self.direction += angle
+
     def eat(self, energy):
         self.energy += energy
+
+    def move_to(self, x, y, dt):
+        X, Y = self.x - x, self.y - y
+        k = 1
+        if Y > 0:
+            k = -1
+        angle = (180 - math.degrees(math.acos(X / math.sqrt(X*X + Y * Y))) * k ) % 360
+        self.direction%= 360
+        k = 1
+        if angle - self.direction < 0:
+            k = -1
+        if not math.fabs(self.direction - angle) < 1:
+            self.rotate(k * 3 * self.speed * dt)
+        print(angle, self.direction, math.fabs(self.direction - angle))
 
 
 class Hunter(Creature):
