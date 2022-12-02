@@ -9,8 +9,7 @@ import GenomeManager
 class Core:
 
     def __init__(self):
-        #self.creatures = GenomeManager.CreatePopulation(1)
-        self.creatures = [Creature.Creature(20, 20, (255,255,255), 0, 0)]
+        self.creatures = GenomeManager.CreatePopulation(50)
         self.food = FoodManager.FoodManager()
         self.alive = True
         self.running = False
@@ -64,7 +63,10 @@ class Core:
 
     def update(self, deltaTime):
         for creature in self.creatures:
-            creature.update(deltaTime)
+            if creature.is_dead():
+                self.creatures.remove(creature)
+            else:
+                creature.update(deltaTime, self.food)
 
     def start(self):
         self.running = True

@@ -7,32 +7,39 @@ class Creature:
 
     def __init__(self, size, speed, color, x = 0, y = 0):
         self.alive = True
-        self.energy = 10
+        self.energy = 100
         self.x = x
         self.y = y
         self.size = size
         self.speed = speed
         self.color = color
         self.direction = 0
-
         self.energy_loss = GenomeManager.GetEnergyLoss(self.size, self.speed)
 
-    def update(self, dt):
+    def update(self, dt, food):
         self.x += self.speed*math.cos(math.radians(self.direction)) * dt
         self.y += self.speed*math.sin(math.radians(self.direction)) * dt
         self.energy -= dt * self.energy_loss
         if self.energy <= 0:
             self.alive = False
-        self.move_to(200, 200, dt)
+        point = food.get_near_food((self.x, self.y))
+        if point is None:
+            return
+        if (point[0] - self.x)**2 + (point[1] - self.y)**2 <= (self.size + food.food_size)**2:
+            food.eat(point)
+            self.energy += 20
+        else:
+            self.move_to(point[0], point[1], dt)
+        self.energy -= self.energy_loss * dt
+        if self.energy <= 0:
+            self.alive = 0
 
     def is_dead(self):
         return not self.alive
 
+
     def rotate(self, angle):
         self.direction += angle
-
-    def eat(self, energy):
-        self.energy += energy
 
     def move_to(self, x, y, dt):
         X, Y = self.x - x, self.y - y
@@ -45,8 +52,7 @@ class Creature:
         if angle - self.direction < 0:
             k = -1
         if not math.fabs(self.direction - angle) < 1:
-            self.rotate(k * 3 * self.speed * dt)
-        print(angle, self.direction, math.fabs(self.direction - angle))
+            self.rotate(k * 5 * self.speed * dt)
 
 
 class Hunter(Creature):
