@@ -14,9 +14,9 @@ class Core:
         """
         self.creatures = GenomeManager.create_population(30)
         self.food = FoodManager.FoodManager()
-        self.alive = True
-        self.running = False
-        self.existing = False
+        self.alive = True   # Существует ли программа
+        self.running = False    # Идёт ли симуляция
+        self.existing = False   # Существует ли симуляция
         pg.init()
         self.screen_width = 700
         self.screen_height = 700
@@ -27,22 +27,21 @@ class Core:
         self.fullscreen_menu = Menu.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
 
     def run(self):
-        menu, box, timer = self.fullscreen_menu.render()
+        menu = self.fullscreen_menu.initialize()
         time_now = pg.time.get_ticks()
         time_last_update = time_now
         time_last_fixed_update = time_now
         FUPS = 4  # Fixed Update Per Second
         UPS = 60  # Update Per Second
 
-        while self.alive:
+        while self.alive and self.fullscreen_menu.alive:
             time_now = pg.time.get_ticks()
             self.handle_events(pg.event.get(), menu)
-            self.existing = self.fullscreen_menu.running
 
             if self.running and time_now - time_last_fixed_update > 1000 / FUPS:
                 time_last_fixed_update = time_now
 
-            if self.existing and time_now - time_last_update > 1000 / UPS:
+            if self.fullscreen_menu.running and time_now - time_last_update > 1000 / UPS:
                 self.update((time_now - time_last_update) / 1000)
                 self.render()
                 self.camera.move(self.screen_width, self.screen_height, self.area_width, self.area_height)
@@ -53,7 +52,8 @@ class Core:
 
     def handle_events(self, events, menu):
         for event in events:
-            menu.react(event)
+            if not self.fullscreen_menu.running:
+                menu.react(event)
             if event.type == pg.QUIT:
                 self.alive = False
             if event.type == pg.MOUSEBUTTONDOWN:
@@ -61,6 +61,7 @@ class Core:
                     self.camera.scale_plus()
                 elif event.button == 5:
                     self.camera.scale_minus(self.screen_width, self.screen_height, self.area_width, self.area_height)
+
 
     def fixed_update(self):
         pass
