@@ -3,6 +3,9 @@ from sortedcontainers import SortedList
 class FoodManager:
 
     def __init__(self):
+        """
+        Конструктор класса 'FoodManager'
+        """
         self.food = SortedList()
 
         self.last_time_food_add = 0
@@ -11,9 +14,16 @@ class FoodManager:
         self.food_size = 5
 
     def add_food(self):
+        """
+        Добавляет еду в случайную точку зоны действий
+        """
         self.food.add((random.randint(-1000, 1000), random.randint(-1000, 1000)))
 
     def update(self, time_now):
+        """
+        Добавляет новую еду, если прошло достаточно времени с последнего добавления
+        :param time_now: текущее время
+        """
         if len(self.food) > self.max_count_food:
             return
 
@@ -23,6 +33,11 @@ class FoodManager:
         self.last_time_food_add += count_food_add * self.time_add
 
     def get_near_food(self, point):
+        """
+        Возвращает ближайшую еду к животному
+        :param point: координаты животного
+        :return: ближайшая еда
+        """
         # Не оптимально, доделать!!!
         if len(self.food) == 0:
             return None
@@ -37,7 +52,15 @@ class FoodManager:
 
 
     def eat(self, point):
+        """
+        Удаляет еду, поглощённую животным из списка
+        :param point: еда
+        """
         self.food.remove(point)
 
     def get_food(self):
+        """
+        Возвращает список еды
+        :return: список еды
+        """
         return self.food

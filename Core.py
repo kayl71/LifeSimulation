@@ -9,7 +9,10 @@ import Menu
 class Core:
 
     def __init__(self):
-        self.creatures = GenomeManager.CreatePopulation(30)
+        """
+        Конструктор класса Core.
+        """
+        self.creatures = GenomeManager.create_population(30)
         self.food = FoodManager.FoodManager()
         self.alive = True
         self.running = False
@@ -24,7 +27,6 @@ class Core:
         self.fullscreen_menu = Menu.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
 
     def run(self):
-        #self.start()
         menu, box, timer = self.fullscreen_menu.render()
         time_now = pg.time.get_ticks()
         time_last_update = time_now
@@ -64,14 +66,21 @@ class Core:
         pass
 
     def render(self):
+        """
+        Отрисовка всех объектов на экран
+        """
         Display.render(self.screen, self.creatures, self.food, self.camera, self.screen_width, self.screen_height)
 
-    def update(self, deltaTime):
+    def update(self, delta_time):
+        """
+        Обновляет состояние всех животных на экране
+        :param delta_time: отрезок времени, отвечающий за частоту обновления
+        """
         for creature in self.creatures:
             if creature.is_dead():
                 self.creatures.remove(creature)
             else:
-                creature.update(deltaTime, self.food)
+                creature.update(delta_time, self.food)
                 if creature.is_reproducting():
                     self.creatures.append(creature.get_child())
 
