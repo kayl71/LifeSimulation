@@ -6,16 +6,21 @@ class FoodManager:
         self.food = SortedList()
 
         self.last_time_food_add = 0
-        self.time_add = 0.1
+        self.max_count_food =5000
+        self.time_add = 10
         self.food_size = 5
 
     def add_food(self):
         self.food.add((random.randint(-1000, 1000), random.randint(-1000, 1000)))
 
     def update(self, time_now):
-        if time_now > self.last_time_food_add + self.time_add:
+        if len(self.food) > self.max_count_food:
+            return
+
+        count_food_add = int((time_now - self.last_time_food_add)//self.time_add)
+        for i in range(min(count_food_add, self.max_count_food - len(self.food))):
             self.add_food()
-            self.last_time_food_add = time_now
+        self.last_time_food_add += count_food_add * self.time_add
 
     def get_near_food(self, point):
         # Не оптимально, доделать!!!

@@ -23,30 +23,31 @@ class Core:
         self.camera = Display.Camera(self.screen_width//2, self.screen_height//2)
         self.screen = pg.display.set_mode((self.screen_width, self.screen_height))
         self.fullscreen_menu = Menu.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
+        self.time_now = 0
 
     def run(self):
         #self.start()
         menu, box, timer = self.fullscreen_menu.render()
-        time_now = pg.time.get_ticks()
-        time_last_update = time_now
-        time_last_fixed_update = time_now
+        self.time_now = pg.time.get_ticks()
+        time_last_update = self.time_now
+        time_last_fixed_update = self.time_now
         FUPS = 4  # Fixed Update Per Second
         UPS = 60  # Update Per Second
 
         while self.alive:
-            time_now = pg.time.get_ticks()
+            self.time_now = pg.time.get_ticks()
             self.handle_events(pg.event.get(), menu)
             self.existing = self.fullscreen_menu.running
 
-            if self.running and time_now - time_last_fixed_update > 1000 / FUPS:
-                time_last_fixed_update = time_now
+            if self.running and self.time_now - time_last_fixed_update > 1000 / FUPS:
+                time_last_fixed_update = self.time_now
 
-            if self.existing and time_now - time_last_update > 1000 / UPS:
-                self.update((time_now - time_last_update) / 1000)
+            if self.existing and self.time_now - time_last_update > 1000 / UPS:
+                self.update((self.time_now - time_last_update) / 1000)
                 self.render()
                 self.camera.move(self.screen_width, self.screen_height, self.area_width, self.area_height)
-                self.food.update(time_now)
-                time_last_update = time_now
+                self.food.update(self.time_now)
+                time_last_update = self.time_now
 
         pg.quit()
 
@@ -73,6 +74,8 @@ class Core:
                 self.creatures.remove(creature)
             else:
                 creature.update(deltaTime, self.food)
+                if creature.is_reproducting():
+                    self.creatures.append(creature.get_child())
 
     def begin(self):
         self.existing = True
