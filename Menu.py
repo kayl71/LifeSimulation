@@ -1,6 +1,8 @@
 import thorpy
 import numpy as np
 
+# ВСЁ МЕНЮ ТРЕБУЕТ ДОРАБОТКИ!!!!
+
 
 class Menu:
     def __init__(self, screen, width, height, running):

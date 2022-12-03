@@ -7,7 +7,7 @@ class FoodManager:
 
         self.last_time_food_add = 0
         self.max_count_food =5000
-        self.time_add = 10
+        self.time_add = 5
         self.food_size = 5
 
     def add_food(self):

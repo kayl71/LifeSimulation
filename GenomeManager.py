@@ -20,6 +20,7 @@ def GetEnergyLoss(size, speed):
 
 
 def get_child(creature):
-    child = Creature.Creature(size=creature.size, speed=creature.speed, color=creature.color, x=creature.x, y=creature.y, is_baby=True,
-                              energy=creature.energy/2)
+    child = Creature.Creature(size=creature.size, speed=creature.speed, color=creature.color, x=creature.x,
+                              y=creature.y, is_baby=True,
+                              energy=creature.energy / 2)
     return child
