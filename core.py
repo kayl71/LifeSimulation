@@ -1,5 +1,4 @@
 import pygame as pg
-
 import display
 import food_manager
 import genome_manager
@@ -12,29 +11,29 @@ class Core:
         """
         Конструктор класса Core.
         """
-        self.creatures = genome_manager.create_population(6)
 
-        self.creatures[1].color = (255, 255, 0)
-        self.creatures[2].color = (0, 0, 255)
-        self.creatures[3].color = (0, 255, 255)
-        self.creatures[4].color = (255, 0, 255)
-        self.creatures[5].color = (0, 0 , 0)
-
-        self.food = food_manager.FoodManager(1000)
         self.alive = True   # Существует ли программа
         self.running = False    # Идёт ли симуляция
         self.existing = False   # Существует ли симуляция
+
         pg.init()
         self.screen_width = 700
         self.screen_height = 700
         self.area_width = 2000
         self.area_height = 2000
+
         self.camera = display.Camera(self.screen_width//2, self.screen_height//2)
         self.screen = pg.display.set_mode((self.screen_width, self.screen_height))
         self.fullscreen_menu = menus.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
+        self.fs_menu = self.fullscreen_menu.initialize()
+
+
+        while not self.fullscreen_menu.running:
+            self.handle_events(pg.event.get(), self.fs_menu)
+        self.creatures = genome_manager.create_population(length=self.fullscreen_menu.varset.get_value('population'))
+        self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'))
 
     def run(self):
-        menu = self.fullscreen_menu.initialize()
         time_now = pg.time.get_ticks()
         time_last_update = time_now
         time_last_fixed_update = time_now
@@ -43,7 +42,7 @@ class Core:
 
         while self.alive and self.fullscreen_menu.alive:
             time_now = pg.time.get_ticks()
-            self.handle_events(pg.event.get(), menu)
+            self.handle_events(pg.event.get(), self.fs_menu)
 
             if self.running and time_now - time_last_fixed_update > 1000 / FUPS:
                 time_last_fixed_update = time_now
@@ -68,7 +67,6 @@ class Core:
                     self.camera.scale_plus()
                 elif event.button == 5:
                     self.camera.scale_minus(self.screen_width, self.screen_height, self.area_width, self.area_height)
-
 
     def fixed_update(self):
         pass

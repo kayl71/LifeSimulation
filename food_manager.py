@@ -2,13 +2,13 @@ import random
 from sortedcontainers import SortedList
 class FoodManager:
 
-    def __init__(self, count_food_start):
+    def __init__(self, max_food=1000, count_food_start=1000):
         """
         Конструктор класса 'FoodManager'
         """
         self.food = SortedList()
 
-        self.max_count_food =3000
+        self.max_count_food = max_food
         self.time_add = 20
         self.food_size = 5
         self.last_time_food_add = -self.time_add * count_food_start
@@ -22,6 +22,7 @@ class FoodManager:
     def update(self, time_now):
         """
         Добавляет новую еду, если прошло достаточно времени с последнего добавления
+
         :param time_now: текущее время
         """
         if len(self.food) > self.max_count_food:
@@ -35,7 +36,9 @@ class FoodManager:
     def get_near_food(self, point):
         """
         Возвращает ближайшую еду к животному
+
         :param point: координаты животного
+
         :return: ближайшая еда
         """
         # Не оптимально, доделать!!!
@@ -54,6 +57,7 @@ class FoodManager:
     def eat(self, point):
         """
         Удаляет еду, поглощённую животным из списка
+
         :param point: еда
         """
         self.food.remove(point)
@@ -61,6 +65,7 @@ class FoodManager:
     def get_food(self):
         """
         Возвращает список еды
+
         :return: список еды
         """
         return self.food
