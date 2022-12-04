@@ -1,28 +1,31 @@
 import random
 from sortedcontainers import SortedList
+
+
 class FoodManager:
 
-    def __init__(self):
+    def __init__(self, max_food=1000):
         """
-        Конструктор класса 'FoodManager'
+        Конструктор класса 'FoodManager'.
         """
         self.food = SortedList()
 
         self.last_time_food_add = 0
-        self.max_count_food =5000
+        self.max_count_food = max_food
         self.time_add = 5
         self.food_size = 5
 
     def add_food(self):
         """
-        Добавляет еду в случайную точку зоны действий
+        Добавляет еду в случайную точку зоны действий.
         """
         self.food.add((random.randint(-1000, 1000), random.randint(-1000, 1000)))
 
     def update(self, time_now):
         """
-        Добавляет новую еду, если прошло достаточно времени с последнего добавления
-        :param time_now: текущее время
+        Добавляет новую еду, если прошло достаточно времени с последнего добавления.
+
+        :param time_now: текущее время.
         """
         if len(self.food) > self.max_count_food:
             return
@@ -34,9 +37,11 @@ class FoodManager:
 
     def get_near_food(self, point):
         """
-        Возвращает ближайшую еду к животному
-        :param point: координаты животного
-        :return: ближайшая еда
+        Возвращает ближайшую еду к животному.
+
+        :param point: координаты животного.
+
+        :return: ближайшая еда.
         """
         # Не оптимально, доделать!!!
         if len(self.food) == 0:
@@ -49,18 +54,18 @@ class FoodManager:
                 min_point = food
         return min_point
 
-
-
     def eat(self, point):
         """
-        Удаляет еду, поглощённую животным из списка
-        :param point: еда
+        Удаляет еду, поглощённую животным из списка.
+
+        :param point: еда.
         """
         self.food.remove(point)
 
     def get_food(self):
         """
-        Возвращает список еды
-        :return: список еды
+        Возвращает список еды.
+
+        :return: список еды.
         """
         return self.food

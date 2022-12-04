@@ -1,9 +1,8 @@
 import pygame as pg
-
-import Display
-import FoodManager
-import GenomeManager
-import Menu
+import display
+import food_manager
+import genome_manager
+import menus
 
 
 class Core:
@@ -12,22 +11,27 @@ class Core:
         """
         Конструктор класса Core.
         """
-        self.creatures = GenomeManager.create_population(30)
-        self.food = FoodManager.FoodManager()
+
         self.alive = True   # Существует ли программа
         self.running = False    # Идёт ли симуляция
         self.existing = False   # Существует ли симуляция
+
         pg.init()
         self.screen_width = 700
         self.screen_height = 700
         self.area_width = 2000
         self.area_height = 2000
-        self.camera = Display.Camera(self.screen_width//2, self.screen_height//2)
+        self.camera = display.Camera(self.screen_width//2, self.screen_height//2)
         self.screen = pg.display.set_mode((self.screen_width, self.screen_height))
-        self.fullscreen_menu = Menu.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
+        self.fullscreen_menu = menus.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
+        self.fs_menu = self.fullscreen_menu.initialize()
+
+        while not self.fullscreen_menu.running:
+            self.handle_events(pg.event.get(), self.fs_menu)
+        self.creatures = genome_manager.create_population(length=self.fullscreen_menu.varset.get_value('population'))
+        self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'))
 
     def run(self):
-        menu = self.fullscreen_menu.initialize()
         time_now = pg.time.get_ticks()
         time_last_update = time_now
         time_last_fixed_update = time_now
@@ -36,7 +40,7 @@ class Core:
 
         while self.alive and self.fullscreen_menu.alive:
             time_now = pg.time.get_ticks()
-            self.handle_events(pg.event.get(), menu)
+            self.handle_events(pg.event.get(), self.fs_menu)
 
             if self.running and time_now - time_last_fixed_update > 1000 / FUPS:
                 time_last_fixed_update = time_now
@@ -62,7 +66,6 @@ class Core:
                 elif event.button == 5:
                     self.camera.scale_minus(self.screen_width, self.screen_height, self.area_width, self.area_height)
 
-
     def fixed_update(self):
         pass
 
@@ -70,11 +73,12 @@ class Core:
         """
         Отрисовка всех объектов на экран
         """
-        Display.render(self.screen, self.creatures, self.food, self.camera, self.screen_width, self.screen_height)
+        display.render(self.screen, self.creatures, self.food, self.camera, self.screen_width, self.screen_height)
 
     def update(self, delta_time):
         """
-        Обновляет состояние всех животных на экране
+        Обновляет состояние всех животных на экране.
+
         :param delta_time: отрезок времени, отвечающий за частоту обновления
         """
         for creature in self.creatures:
@@ -82,9 +86,8 @@ class Core:
                 self.creatures.remove(creature)
             else:
                 creature.update(delta_time, self.food)
-                if creature.is_reproducting():
+                if creature.is_reproducing():
                     self.creatures.append(creature.get_child())
-
 
     def begin(self):
         self.existing = True

@@ -1,13 +1,14 @@
 import math
 
-import GenomeManager
+import genome_manager
 
 
 class Creature:
 
-    def __init__(self, size, speed, color, x=0, y=0, is_baby=False, energy=100):
+    def __init__(self, size, speed, color, x=0, y=0, is_baby=False, energy=100, direction=0):
         """
         Конструктор класса 'Creature'.
+
         :param size: размер животного (радиус круга или сторона прямоугольника).
         :param speed: скорость перемещения животного по зоне действий.
         :param color: цвет животного.
@@ -19,7 +20,7 @@ class Creature:
         """
         self.alive = True
         self.is_baby = is_baby
-        self.reproducting = False
+        self.reproducing = False
         self.time_alive = 0
         self.energy = energy
         self.x = x
@@ -27,12 +28,13 @@ class Creature:
         self.size = size
         self.speed = speed
         self.color = color
-        self.direction = 0
-        self.energy_loss = GenomeManager.get_energy_loss(self.size, self.speed)
+        self.direction = direction
+        self.energy_loss = genome_manager.get_energy_loss(self.size, self.speed)
 
     def update(self, dt, food):
         """
         Обновляет состояние животного.
+
         :param dt: отрезок времени, задающий частоту обновления состояния.
         :param food: еда, которую животное может поглотить.
         """
@@ -53,7 +55,7 @@ class Creature:
             food.eat(point)
             self.energy += 20
             if self.energy > 200:
-                self.reproducting = True
+                self.reproducing = True
         else:
             self.move_to(point[0], point[1], dt)
         self.energy -= self.energy_loss * dt
@@ -64,40 +66,45 @@ class Creature:
     def is_dead(self):
         """
         Проверяет, умерло ли животное.
+
         :return: отрицание к параметру 'alive'.
         """
         return not self.alive
 
-    def is_reproducting(self):
+    def is_reproducing(self):
         """
         Проверяет, размножается ли животное.
-        :return: параметр 'reproducting'.
+
+        :return: параметр 'reproducing'.
         """
-        return self.reproducting
+        return self.reproducing
 
     def get_child(self):
         """
-        Отвечает за рождение потомка животного
+        Отвечает за рождение потомка животного.
+
         :return: потомок животного.
         """
-        child = GenomeManager.get_child(self)
+        child = genome_manager.get_child(self)
         self.energy /= 2
-        self.reproducting = False
+        self.reproducing = False
         return child
 
     def rotate(self, angle):
         """
         Отвечает за изменение направления движения животного.
+
         :param angle: угол, на который изменится направление движения.
         """
         self.direction += angle
 
     def move_to(self, x, y, dt):
         """
-        Отвечает за передвижение к точке
-        :param x: координата x точки
-        :param y: координата y точки
-        :param dt: отрезок времени, задающий частоту обновления состояния
+        Отвечает за передвижение к точке.
+
+        :param x: координата x точки.
+        :param y: координата y точки.
+        :param dt: отрезок времени, задающий частоту обновления состояния.
         """
         X, Y = self.x - x, self.y - y
         k = 1
