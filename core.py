@@ -1,9 +1,9 @@
 import pygame as pg
 
-import Display
-import FoodManager
-import GenomeManager
-import Menu
+import display
+import food_manager
+import genome_manager
+import menus
 
 
 class Core:
@@ -12,7 +12,7 @@ class Core:
         """
         Конструктор класса Core.
         """
-        self.creatures = GenomeManager.create_population(6)
+        self.creatures = genome_manager.create_population(6)
 
         self.creatures[1].color = (255, 255, 0)
         self.creatures[2].color = (0, 0, 255)
@@ -20,7 +20,7 @@ class Core:
         self.creatures[4].color = (255, 0, 255)
         self.creatures[5].color = (0, 0 , 0)
 
-        self.food = FoodManager.FoodManager(1000)
+        self.food = food_manager.FoodManager(1000)
         self.alive = True   # Существует ли программа
         self.running = False    # Идёт ли симуляция
         self.existing = False   # Существует ли симуляция
@@ -29,9 +29,9 @@ class Core:
         self.screen_height = 700
         self.area_width = 2000
         self.area_height = 2000
-        self.camera = Display.Camera(self.screen_width//2, self.screen_height//2)
+        self.camera = display.Camera(self.screen_width//2, self.screen_height//2)
         self.screen = pg.display.set_mode((self.screen_width, self.screen_height))
-        self.fullscreen_menu = Menu.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
+        self.fullscreen_menu = menus.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
 
     def run(self):
         menu = self.fullscreen_menu.initialize()
@@ -77,7 +77,7 @@ class Core:
         """
         Отрисовка всех объектов на экран
         """
-        Display.render(self.screen, self.creatures, self.food, self.camera, self.screen_width, self.screen_height)
+        display.render(self.screen, self.creatures, self.food, self.camera, self.screen_width, self.screen_height)
 
     def update(self, delta_time):
         """
@@ -89,7 +89,7 @@ class Core:
                 self.creatures.remove(creature)
             else:
                 creature.update(delta_time, self.food)
-                if creature.is_reproducting():
+                if creature.is_reproducing():
                     self.creatures.append(creature.get_child())
 
 

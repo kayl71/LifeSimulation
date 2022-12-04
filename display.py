@@ -1,13 +1,13 @@
 import pygame as pg
-import Creature
+import creatures
 
 
-def render(screen, creatures, food, camera, width, height):
+def render(screen, all_creatures, food, camera, width, height):
     """
     Отрисовывает объекты на экране в соответствии с положением и масштабом камеры.
 
     :param screen: экран, на котором происходит отрисовка.
-    :param creatures: животные для отрисовки.
+    :param all_creatures: животные для отрисовки.
     :param food: еда для отрисовки.
     :param camera: камера.
     :param width: ширина экрана.
@@ -28,26 +28,26 @@ def render(screen, creatures, food, camera, width, height):
                        (food.food_size * camera.scale) + 1)
 
     # Отрисовка животных
-    for creature in creatures:
+    for cur_creature in all_creatures:
         # Отрисовка хищника
-        if type(creature) == Creature.Hunter:
-            pg.draw.rect(screen, creature.color,
-                         [(creature.x - camera.x) * camera.scale + width / 2,
-                          (creature.y - camera.y) * camera.scale + height / 2,
-                          creature.size * camera.scale + 1,
-                          creature.size * camera.scale + 1])
+        if type(cur_creature) == creatures.Hunter:
+            pg.draw.rect(screen, cur_creature.color,
+                         [(cur_creature.x - camera.x) * camera.scale + width / 2,
+                          (cur_creature.y - camera.y) * camera.scale + height / 2,
+                          cur_creature.size * camera.scale + 1,
+                          cur_creature.size * camera.scale + 1])
         # Отрисовка жертвы
-        elif type(creature) == Creature.Prey:
-            pg.draw.circle(screen, creature.color,
-                           [(creature.x - camera.x) * camera.scale + width / 2,
-                            (creature.y - camera.y) * camera.scale + height / 2],
-                           (creature.size * camera.scale) + 1)
+        elif type(cur_creature) == creatures.Prey:
+            pg.draw.circle(screen, cur_creature.color,
+                           [(cur_creature.x - camera.x) * camera.scale + width / 2,
+                            (cur_creature.y - camera.y) * camera.scale + height / 2],
+                           (cur_creature.size * camera.scale) + 1)
         # Отрисовка другого животного
         else:
-            pg.draw.circle(screen, creature.color,
-                           [(creature.x - camera.x) * camera.scale + width / 2,
-                            (creature.y - camera.y) * camera.scale + height / 2],
-                           (creature.size * camera.scale) + 1)
+            pg.draw.circle(screen, cur_creature.color,
+                           [(cur_creature.x - camera.x) * camera.scale + width / 2,
+                            (cur_creature.y - camera.y) * camera.scale + height / 2],
+                           (cur_creature.size * camera.scale) + 1)
 
     pg.display.update()
 

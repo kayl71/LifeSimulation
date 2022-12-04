@@ -1,5 +1,5 @@
 import random
-import Creature
+import creatures
 
 
 def make_creature():
@@ -7,7 +7,7 @@ def make_creature():
     Создаёт новое животное
     :return: экземпляр класса 'Creature'
     """
-    return Creature.Creature(size=random.randint(10, 20), speed=random.randint(40, 60), color=(255, 255, 255),
+    return creatures.Creature(size=random.randint(10, 20), speed=random.randint(40, 60), color=(255, 255, 255),
                              x=random.randint(-1000, 1000), y=random.randint(-1000, 1000))
 
 
@@ -43,6 +43,6 @@ def get_child(creature):
     size = creature.size + random.uniform(-0.5, 0.5)
     speed = creature.speed + random.uniform(-1, 1)
     color = creature.color
-    child = Creature.Creature(size, speed, color, x=creature.x, y=creature.y,
+    child = creatures.Creature(size, speed, color, x=creature.x, y=creature.y,
                               is_baby=True, energy=creature.energy / 2)
     return child
