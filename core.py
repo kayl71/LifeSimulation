@@ -1,4 +1,6 @@
 import pygame as pg
+
+import creatures
 import display
 import food_manager
 import genome_manager
@@ -31,6 +33,7 @@ class Core:
         while not self.fullscreen_menu.running:
             self.handle_events(pg.event.get(), self.fs_menu)
         self.creatures = genome_manager.create_population(length=self.fullscreen_menu.varset.get_value('population'))
+        creatures.Creature.IS_AGING = self.fullscreen_menu.varset.get_value("aging")
         self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'))
 
     def run(self):

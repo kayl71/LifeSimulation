@@ -5,6 +5,12 @@ import genome_manager
 
 class Creature:
 
+    TIME_ALIVE = 30
+    TIME_GROW_UP = 5
+    ENERGY_FOR_REPRODUCING = 200
+    IS_AGING = False
+
+
     def __init__(self, size, speed, color, x=0, y=0, is_baby=False, energy=100, direction=0):
         """
         Конструктор класса 'Creature'.
@@ -40,8 +46,10 @@ class Creature:
         """
         self.time_alive += dt
         if self.is_baby:
-            self.is_baby = self.time_alive < 5
+            self.is_baby = self.time_alive < self.TIME_GROW_UP
             return
+        if self.IS_AGING and self.time_alive > self.TIME_ALIVE:
+            self.alive = False
 
         self.x += self.speed * math.cos(math.radians(self.direction)) * dt
         self.y += self.speed * math.sin(math.radians(self.direction)) * dt
@@ -54,7 +62,7 @@ class Creature:
         if (point[0] - self.x) ** 2 + (point[1] - self.y) ** 2 <= (self.size + food.food_size) ** 2:
             food.eat(point)
             self.energy += 20
-            if self.energy > 200:
+            if self.energy > self.ENERGY_FOR_REPRODUCING:
                 self.reproducing = True
         else:
             self.move_to(point[0], point[1], dt)
