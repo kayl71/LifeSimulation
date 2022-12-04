@@ -12,8 +12,15 @@ class Core:
         """
         Конструктор класса Core.
         """
-        self.creatures = GenomeManager.create_population(30)
-        self.food = FoodManager.FoodManager()
+        self.creatures = GenomeManager.create_population(6)
+
+        self.creatures[1].color = (255, 255, 0)
+        self.creatures[2].color = (0, 0, 255)
+        self.creatures[3].color = (0, 255, 255)
+        self.creatures[4].color = (255, 0, 255)
+        self.creatures[5].color = (0, 0 , 0)
+
+        self.food = FoodManager.FoodManager(1000)
         self.alive = True   # Существует ли программа
         self.running = False    # Идёт ли симуляция
         self.existing = False   # Существует ли симуляция

@@ -38,7 +38,7 @@ class Creature:
         """
         self.time_alive += dt
         if self.is_baby:
-            self.is_baby = self.time_alive < 1
+            self.is_baby = self.time_alive < 5
             return
 
         self.x += self.speed * math.cos(math.radians(self.direction)) * dt
@@ -109,7 +109,7 @@ class Creature:
         if angle - self.direction < 0:
             k = -1
         if not math.fabs(self.direction - angle) < 1:
-            self.rotate(k * 5 * self.speed * dt)
+            self.rotate(k * 10 * self.speed * dt)
 
 
 class Hunter(Creature):

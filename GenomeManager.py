@@ -7,8 +7,8 @@ def make_creature():
     Создаёт новое животное
     :return: экземпляр класса 'Creature'
     """
-    return Creature.Creature(random.randint(10, 20), random.randint(30, 50), (255, 255, 255),
-                             random.randint(-1000, 1000), random.randint(-1000, 1000))
+    return Creature.Creature(size=random.randint(10, 20), speed=random.randint(40, 60), color=(255, 255, 255),
+                             x=random.randint(-1000, 1000), y=random.randint(-1000, 1000))
 
 
 def create_population(len: int):
@@ -31,7 +31,7 @@ def get_energy_loss(size, speed):
     :param speed: скорость животного
     :return: количество потерянной энергии
     """
-    return (size * 2 + speed * 1.5) / 10
+    return (size * 0.9 + speed * 1.7) / 8
 
 
 def get_child(creature):
@@ -40,7 +40,9 @@ def get_child(creature):
     :param creature: животное
     :return: потомок животного
     """
-    child = Creature.Creature(size=creature.size, speed=creature.speed, color=creature.color, x=creature.x,
-                              y=creature.y, is_baby=True,
-                              energy=creature.energy / 2)
+    size = creature.size + random.uniform(-0.5, 0.5)
+    speed = creature.speed + random.uniform(-1, 1)
+    color = creature.color
+    child = Creature.Creature(size, speed, color, x=creature.x, y=creature.y,
+                              is_baby=True, energy=creature.energy / 2)
     return child

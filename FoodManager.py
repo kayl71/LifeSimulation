@@ -2,16 +2,16 @@ import random
 from sortedcontainers import SortedList
 class FoodManager:
 
-    def __init__(self):
+    def __init__(self, count_food_start):
         """
         Конструктор класса 'FoodManager'
         """
         self.food = SortedList()
 
-        self.last_time_food_add = 0
-        self.max_count_food =5000
-        self.time_add = 5
+        self.max_count_food =3000
+        self.time_add = 20
         self.food_size = 5
+        self.last_time_food_add = -self.time_add * count_food_start
 
     def add_food(self):
         """
