@@ -6,7 +6,7 @@ import genome_manager
 class Creature:
 
     TIME_ALIVE = 30
-    TIME_GROW_UP = 0
+    TIME_GROW_UP = 3
     ENERGY_FOR_REPRODUCING = 200
     IS_AGING = False
 
