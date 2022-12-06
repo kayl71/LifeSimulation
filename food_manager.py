@@ -78,7 +78,7 @@ class FoodManager:
         self.len_food = 0
 
         self.max_count_food = max_food
-        self.time_add = 2
+        self.time_add = 10
         self.food_size = 5
         if count_food_start is None:
             count_food_start = max_food//2
@@ -91,6 +91,7 @@ class FoodManager:
         Добавляет еду в случайную точку зоны действий
         """
         self.food.add(random.randint(-1000, 1000), random.randint(-1000, 1000))
+        self.len_food += 1
 
     def update(self, time_now):
         """
