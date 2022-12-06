@@ -21,7 +21,7 @@ def render(screen, all_creatures, food, camera, width, height):
                                        1980 * camera.scale + 1])  # удалить его в финальной версии
 
     # Отрисовка еды
-    for coord_food in food.food:
+    for coord_food in food.food.get():
         pg.draw.circle(screen, (0, 255, 0),
                        [(coord_food[0] - camera.x) * camera.scale + width / 2,
                         (coord_food[1] - camera.y) * camera.scale + height / 2],

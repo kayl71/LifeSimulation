@@ -59,6 +59,7 @@ class Creature:
         point = food.get_near_food((self.x, self.y))
         if point is None:
             return
+
         if (point[0] - self.x) ** 2 + (point[1] - self.y) ** 2 <= (self.size + food.food_size) ** 2:
             food.eat(point)
             self.energy += 20

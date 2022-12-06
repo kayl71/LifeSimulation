@@ -29,12 +29,13 @@ class Core:
         self.fullscreen_menu = menus.FullScreenMenu(self.screen, self.screen_width, self.screen_height, self.existing)
         self.fs_menu = self.fullscreen_menu.initialize()
 
+        self.clock = pg.time.Clock()
 
         while not self.fullscreen_menu.running:
             self.handle_events(pg.event.get(), self.fs_menu)
+        self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'))
         self.creatures = genome_manager.create_population(length=self.fullscreen_menu.varset.get_value('population'))
         creatures.Creature.IS_AGING = self.fullscreen_menu.varset.get_value("aging")
-        self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'))
 
     def run(self):
         time_now = pg.time.get_ticks()
@@ -43,18 +44,20 @@ class Core:
         FUPS = 4  # Fixed Update Per Second
         UPS = 60  # Update Per Second
 
+        self.food.start(pg.time.get_ticks())
         while self.alive and self.fullscreen_menu.alive:
-            time_now = pg.time.get_ticks()
             self.handle_events(pg.event.get(), self.fs_menu)
+            time_now = pg.time.get_ticks()
 
             if self.running and time_now - time_last_fixed_update > 1000 / FUPS:
                 time_last_fixed_update = time_now
 
             if self.fullscreen_menu.running and time_now - time_last_update > 1000 / UPS:
-                self.update((time_now - time_last_update) / 1000)
                 self.render()
                 self.camera.move(self.screen_width, self.screen_height, self.area_width, self.area_height)
                 self.food.update(time_now)
+                self.update((time_now - time_last_update) / 1000)
+                pg.display.set_caption("fps: "+str(round(1000 / (time_now - time_last_update), 1)))
                 time_last_update = time_now
 
         pg.quit()
@@ -92,7 +95,6 @@ class Core:
                 creature.update(delta_time, self.food)
                 if creature.is_reproducing():
                     self.creatures.append(creature.get_child())
-
 
     def begin(self):
         self.existing = True
