@@ -1,11 +1,13 @@
 import pygame as pg
 
+import random
 import creatures
 import display
 import food_manager
 import genome_manager
 import menus
 
+random.seed(100)
 
 class Core:
 

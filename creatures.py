@@ -36,7 +36,7 @@ class Creature:
         self.direction = direction
         self.energy_loss = genome_manager.get_energy_loss(self.size, self.speed)
 
-    def update(self, dt, food):
+    def update(self, dt, food, near_creature=None):
         """
         Обновляет состояние животного.
         :param dt: отрезок времени, задающий частоту обновления состояния.
@@ -122,8 +122,70 @@ class Creature:
 
 
 class Hunter(Creature):
-    pass
+    def update(self, dt, near_prey=None):
+        """
+        Обновляет состояние животного.
+        :param dt: отрезок времени, задающий частоту обновления состояния.
+        :param near_creature: ближайшее животное
+        """
+        self.time_alive += dt
+        if self.is_baby:
+            self.is_baby = self.time_alive < self.TIME_GROW_UP
+            return
+        if self.IS_AGING and self.time_alive > self.TIME_ALIVE:
+            self.alive = False
+
+        self.x += self.speed * math.cos(math.radians(self.direction)) * dt
+        self.y += self.speed * math.sin(math.radians(self.direction)) * dt
+        self.energy -= dt * self.energy_loss
+        if self.energy <= 0:
+            self.alive = False
+            return
+
+        if near_prey is None or near_prey.size > self.size:
+            return
+        point = [near_prey.x, near_prey.y]
+
+        if (point[0] - self.x) ** 2 + (point[1] - self.y) ** 2 <= (self.size + near_prey.size) ** 2:
+            self.energy += near_prey.energy
+            near_prey.alive = False
+            if self.energy > self.ENERGY_FOR_REPRODUCING:
+                self.reproducing = True
+        else:
+            self.move_to(point[0], point[1], dt)
+        self.energy -= self.energy_loss * dt
 
 
 class Prey(Creature):
-    pass
+    def update(self, dt, food):
+        """
+        Обновляет состояние животного.
+        :param dt: отрезок времени, задающий частоту обновления состояния.
+        :param food: еда, которую животное может поглотить.
+        """
+        self.time_alive += dt
+        if self.is_baby:
+            self.is_baby = self.time_alive < self.TIME_GROW_UP
+            return
+        if self.IS_AGING and self.time_alive > self.TIME_ALIVE:
+            self.alive = False
+
+        self.x += self.speed * math.cos(math.radians(self.direction)) * dt
+        self.y += self.speed * math.sin(math.radians(self.direction)) * dt
+        self.energy -= dt * self.energy_loss
+        if self.energy <= 0:
+            self.alive = False
+            return
+
+        point = food.get_near_food((self.x, self.y))
+        if point is None:
+            return
+
+        if (point[0] - self.x) ** 2 + (point[1] - self.y) ** 2 <= (self.size + food.food_size) ** 2:
+            food.eat(point)
+            self.energy += 20
+            if self.energy > self.ENERGY_FOR_REPRODUCING:
+                self.reproducing = True
+        else:
+            self.move_to(point[0], point[1], dt)
+        self.energy -= self.energy_loss * dt

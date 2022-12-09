@@ -29,25 +29,11 @@ def render(screen, all_creatures, food, camera, width, height):
 
     # Отрисовка животных
     for cur_creature in all_creatures:
-        # Отрисовка хищника
-        if type(cur_creature) == creatures.Hunter:
-            pg.draw.rect(screen, cur_creature.color,
-                         [(cur_creature.x - camera.x) * camera.scale + width / 2,
-                          (cur_creature.y - camera.y) * camera.scale + height / 2,
-                          cur_creature.size * camera.scale + 1,
-                          cur_creature.size * camera.scale + 1])
-        # Отрисовка жертвы
-        elif type(cur_creature) == creatures.Prey:
-            pg.draw.circle(screen, cur_creature.color,
-                           [(cur_creature.x - camera.x) * camera.scale + width / 2,
-                            (cur_creature.y - camera.y) * camera.scale + height / 2],
-                           (cur_creature.size * camera.scale) + 1)
-        # Отрисовка другого животного
-        else:
-            pg.draw.circle(screen, cur_creature.color,
-                           [(cur_creature.x - camera.x) * camera.scale + width / 2,
-                            (cur_creature.y - camera.y) * camera.scale + height / 2],
-                           (cur_creature.size * camera.scale) + 1)
+        # Отрисовка животного
+        pg.draw.circle(screen, cur_creature.color,
+                       [(cur_creature.x - camera.x) * camera.scale + width / 2,
+                        (cur_creature.y - camera.y) * camera.scale + height / 2],
+                       (cur_creature.size * camera.scale) + 1)
 
     pg.display.update()
 
