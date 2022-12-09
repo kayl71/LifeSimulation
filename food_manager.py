@@ -70,7 +70,7 @@ class Cell:
 
 class FoodManager:
 
-    def __init__(self, max_food=1000, count_food_start=None):
+    def __init__(self, max_food=1000, time_add = 1, count_food_start=None):
         """
         Конструктор класса 'FoodManager'
         """
@@ -78,7 +78,7 @@ class FoodManager:
         self.len_food = 0
 
         self.max_count_food = max_food
-        self.time_add = 10
+        self.time_add = time_add
         self.food_size = 5
         if count_food_start is None:
             count_food_start = max_food//2

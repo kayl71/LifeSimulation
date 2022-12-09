@@ -33,7 +33,9 @@ class Core:
 
         while not self.fullscreen_menu.running:
             self.handle_events(pg.event.get(), self.fs_menu)
-        self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'))
+        self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'),
+                                             self.fullscreen_menu.varset.get_value('food_speed'),
+                                             self.fullscreen_menu.varset.get_value('init_food'))
         self.creatures = genome_manager.create_population(length=self.fullscreen_menu.varset.get_value('population'))
         creatures.Creature.IS_AGING = self.fullscreen_menu.varset.get_value("aging")
         #self.small_menu = menus.SmallMenu(self.screen, self.screen_width, self.screen_height, self.existing)

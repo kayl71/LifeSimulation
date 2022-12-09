@@ -14,7 +14,6 @@ class Creature:
     def __init__(self, size, speed, color, x=0, y=0, is_baby=False, energy=100, direction=0):
         """
         Конструктор класса 'Creature'.
-
         :param size: размер животного (радиус круга или сторона прямоугольника).
         :param speed: скорость перемещения животного по зоне действий.
         :param color: цвет животного.
@@ -40,7 +39,6 @@ class Creature:
     def update(self, dt, food):
         """
         Обновляет состояние животного.
-
         :param dt: отрезок времени, задающий частоту обновления состояния.
         :param food: еда, которую животное может поглотить.
         """
@@ -75,7 +73,6 @@ class Creature:
     def is_dead(self):
         """
         Проверяет, умерло ли животное.
-
         :return: отрицание к параметру 'alive'.
         """
         return not self.alive
@@ -83,7 +80,6 @@ class Creature:
     def is_reproducing(self):
         """
         Проверяет, размножается ли животное.
-
         :return: параметр 'reproducing'.
         """
         return self.reproducing
@@ -91,7 +87,6 @@ class Creature:
     def get_child(self):
         """
         Отвечает за рождение потомка животного.
-
         :return: потомок животного.
         """
         child = genome_manager.get_child(self)
@@ -102,7 +97,6 @@ class Creature:
     def rotate(self, angle):
         """
         Отвечает за изменение направления движения животного.
-
         :param angle: угол, на который изменится направление движения.
         """
         self.direction += angle
@@ -110,7 +104,6 @@ class Creature:
     def move_to(self, x, y, dt):
         """
         Отвечает за передвижение к точке.
-
         :param x: координата x точки.
         :param y: координата y точки.
         :param dt: отрезок времени, задающий частоту обновления состояния.
