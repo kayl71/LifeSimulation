@@ -1,5 +1,6 @@
 import random
 import creatures
+import food_manager
 
 
 def make_creature():
@@ -46,3 +47,36 @@ def get_child(creature):
     child = creatures.Creature(size, speed, color, x=creature.x, y=creature.y,
                               is_baby=True, energy=creature.energy / 2)
     return child
+
+class CreatureManager:
+
+    def __init__(self, start_creatures_count):
+        creature_list = create_population(start_creatures_count)
+        self._replace_creatures(creature_list)
+
+    def update(self, dt, food):
+        creature_list = []
+        for creature_info in self.creatures.get():
+            creature_list.append(creature_info[2])
+
+        for creature in creature_list:
+            if creature.is_dead():
+                creature_list.remove(creature)
+            else:
+                creature.update(dt, food)
+                if creature.is_reproducing():
+                    creature_list.append(creature.get_child())
+
+            creature.update(dt, food)
+        self._replace_creatures(creature_list)
+
+    def _replace_creatures(self, creatures):
+        self.creatures = food_manager.Cell()
+        for creature in creatures:
+            self.creatures.add(creature.x, creature.y, creature)
+
+    def get(self):
+        creature_list = []
+        for creature_info in self.creatures.get():
+            creature_list.append(creature_info[2])
+        return creature_list

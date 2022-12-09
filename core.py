@@ -36,7 +36,7 @@ class Core:
         self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'),
                                              self.fullscreen_menu.varset.get_value('food_speed'),
                                              self.fullscreen_menu.varset.get_value('init_food'))
-        self.creatures = genome_manager.create_population(length=self.fullscreen_menu.varset.get_value('population'))
+        self.creatures = genome_manager.CreatureManager(self.fullscreen_menu.varset.get_value('population'))
         creatures.Creature.IS_AGING = self.fullscreen_menu.varset.get_value("aging")
         #self.small_menu = menus.SmallMenu(self.screen, self.screen_width, self.screen_height, self.existing)
 
@@ -84,20 +84,14 @@ class Core:
         """
         Отрисовка всех объектов на экран
         """
-        display.render(self.screen, self.creatures, self.food, self.camera, self.screen_width, self.screen_height)
+        display.render(self.screen, self.creatures.get(), self.food, self.camera, self.screen_width, self.screen_height)
 
     def update(self, delta_time):
         """
         Обновляет состояние всех животных на экране
         :param delta_time: отрезок времени, отвечающий за частоту обновления
         """
-        for creature in self.creatures:
-            if creature.is_dead():
-                self.creatures.remove(creature)
-            else:
-                creature.update(delta_time, self.food)
-                if creature.is_reproducing():
-                    self.creatures.append(creature.get_child())
+        self.creatures.update(delta_time, self.food)
 
     def begin(self):
         self.existing = True

@@ -17,12 +17,13 @@ class Cell:
                 self.m[i].append([])
         self.SIZE /= self.DEPTH_MAX
 
-    def add(self, x, y):
+    def add(self, x, y, obj=None):
         xi = self.__get_x_index(x)
         yi = self.__get_y_index(y)
-        self.m[yi][xi].append([x, y])
+        if xi >= 0 and xi<len(self.m[0]) and yi >= 0 and yi<len(self.m):
+            self.m[yi][xi].append([x, y, obj])
 
-    def search(self, x, y):
+    def search(self, x, y, without_it=False):
         xi = self.__get_x_index(x)
         yi = self.__get_y_index(y)
         min_p, min_v = None, 99999999
@@ -32,7 +33,7 @@ class Cell:
             for Y in range(yi-1, yi+2):
                 if Y < 0 or Y >= self.DEPTH_MAX:
                     continue
-                info = self.__search(x, y, X, Y)
+                info = self.__search(x, y, X, Y, without_it)
                 if info[1] < min_v:
                     min_v = info[1]
                     min_p = info[0]
@@ -45,9 +46,12 @@ class Cell:
     def __get_y_index(self, y):
         return math.ceil((y-self.POS)/self.SIZE) - 1
 
-    def __search(self, x, y, xi, yi):
+    def __search(self, x, y, xi, yi, without_it=False):
         min_v, min_p = 9999999, None
         for point in self.m[yi][xi]:
+            if without_it and x == point[0] and y == point[1]:
+                continue
+
             P = (point[0] - x)**2 + (point[1] - y)**2
             if min_v > P:
                 min_v = P
@@ -61,16 +65,16 @@ class Cell:
                 list_get += self.m[i][j]
         return list_get
 
-    def remove(self, x, y):
+    def remove(self, x, y, obj=None):
         xi = self.__get_x_index(x)
         yi = self.__get_y_index(y)
-        self.m[yi][xi].remove([x, y])
+        self.m[yi][xi].remove([x, y, obj])
 
 
 
 class FoodManager:
 
-    def __init__(self, max_food=1000, time_add = 1, count_food_start=None):
+    def __init__(self, max_food=1000, count_food_per_sec=1, count_food_start=None):
         """
         Конструктор класса 'FoodManager'
         """
@@ -78,7 +82,10 @@ class FoodManager:
         self.len_food = 0
 
         self.max_count_food = max_food
-        self.time_add = time_add
+        if count_food_per_sec == 0:
+            self.time_add = 10**9
+        else:
+            self.time_add = 1000/count_food_per_sec
         self.food_size = 5
         if count_food_start is None:
             count_food_start = max_food//2
