@@ -36,6 +36,7 @@ class Core:
         self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'))
         self.creatures = genome_manager.create_population(length=self.fullscreen_menu.varset.get_value('population'))
         creatures.Creature.IS_AGING = self.fullscreen_menu.varset.get_value("aging")
+        #self.small_menu = menus.SmallMenu(self.screen, self.screen_width, self.screen_height, self.existing)
 
     def run(self):
         time_now = pg.time.get_ticks()
