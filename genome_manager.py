@@ -4,8 +4,7 @@ import food_manager
 
 
 class AreaParameters:
-    AREA_WIDTH = 0
-    AREA_HEIGHT = 0
+    AREA_SIZE = 0
 
 
 def make_creature(type_id_creature):
@@ -19,13 +18,13 @@ def make_creature(type_id_creature):
 
     if type_id_creature == 0:
         return creatures.Prey(size=random.randint(10, 20), speed=random.randint(40, 60), color=(255, 255, 255),
-                              x=random.randint(-AreaParameters.AREA_WIDTH // 2, AreaParameters.AREA_WIDTH // 2),
-                              y=random.randint(-AreaParameters.AREA_HEIGHT // 2, AreaParameters.AREA_HEIGHT // 2))
+                              x=random.randint(-AreaParameters.AREA_SIZE // 2, AreaParameters.AREA_SIZE // 2),
+                              y=random.randint(-AreaParameters.AREA_SIZE // 2, AreaParameters.AREA_SIZE // 2))
 
     elif type_id_creature == 1:
         return creatures.Hunter(size=random.randint(10, 20), speed=random.randint(40, 60), color=(0, 0, 255),
-                                x=random.randint(-AreaParameters.AREA_WIDTH // 2, AreaParameters.AREA_WIDTH // 2),
-                                y=random.randint(-AreaParameters.AREA_HEIGHT // 2, AreaParameters.AREA_HEIGHT // 2))
+                                x=random.randint(-AreaParameters.AREA_SIZE // 2, AreaParameters.AREA_SIZE // 2),
+                                y=random.randint(-AreaParameters.AREA_SIZE // 2, AreaParameters.AREA_SIZE // 2))
 
 
 def create_population(length: int, cr_type: int):
@@ -68,13 +67,13 @@ def get_child(creature):
     type_creature = type(creature)
     if type_creature is creatures.Hunter:
         child = creatures.Hunter(size, speed, color, x=creature.x, y=creature.y,
-                                 is_baby=True, energy=creature.energy / 2)
+                                 is_baby=True, direction=random.randint(0, 359))
     elif type_creature is creatures.Prey:
         child = creatures.Prey(size, speed, color, x=creature.x, y=creature.y,
-                               is_baby=True, energy=creature.energy / 2)
+                               is_baby=True, direction=random.randint(0, 359))
     else:
         child = creatures.Creature(size, speed, color, x=creature.x, y=creature.y,
-                                   is_baby=True, energy=creature.energy / 2)
+                                   is_baby=True, direction=random.randint(0, 359))
 
     return child
 

@@ -68,14 +68,13 @@ class FullScreenMenu:
         exit_button = thorpy.make_button('Quit', func=thorpy.functions.quit_func)
         exit_button.set_size((self.width / 7, self.height / 14))
 
-        self.varset.add('hunt_population', 5, 'Initial hunters population', limits=(0, 250))
-        self.varset.add('prey_population', 5, 'Initial preys population', limits=(0, 250))
+        self.varset.add('hunt_population', 5, 'Initial hunters population', limits=(0, 400))
+        self.varset.add('prey_population', 5, 'Initial preys population', limits=(0, 400))
         self.varset.add('aging', value=False, text='Aging')
         self.varset.add('max_food', 50, 'Maximal food amount', limits=(20, 10000))
-        self.varset.add('food_speed', 1, 'Food generation speed', limits=(0, 100))
+        self.varset.add('food_speed', 1, 'Food generation speed', limits=(0, 400))
         self.varset.add('init_food', 50, 'Initial food amount', limits=(20, 1000))
-        self.varset.add('area_h', 2000, 'Area height', limits=(2000, 5000))
-        self.varset.add('area_w', 2000, 'Area width', limits=(2000, 5000))
+        self.varset.add('area_s', 2000, 'Area size', limits=(2000, 5000))
         options = thorpy.ParamSetterLauncher.make([self.varset], 'Options', 'Options',
                                                   size=(self.width / 7, self.height / 14))
 

@@ -6,9 +6,9 @@ import genome_manager
 class Creature:
     IS_AGING = False
 
-    def __init__(self, size, speed, color, x=0, y=0, is_baby=False, energy=100, direction=0,
+    def __init__(self, size, speed, color, x=0, y=0, is_baby=False, energy=200, direction=0,
                  alive=True, reproducing=False, time_alive=0, max_time_alive=30,
-                 time_to_grow_up=3, energy_for_reproducing=200):
+                 time_to_grow_up=3, energy_for_reproducing=500):
         """
         Конструктор класса 'Creature'.
 
@@ -99,7 +99,7 @@ class Creature:
         :return: потомок животного.
         """
         child = genome_manager.get_child(self)
-        self.energy /= 2
+        self.energy /= 3
         self.reproducing = False
         return child
 
@@ -158,7 +158,7 @@ class Hunter(Creature):
         point = [near_prey.x, near_prey.y]
 
         if (point[0] - self.x) ** 2 + (point[1] - self.y) ** 2 <= (self.size + near_prey.size) ** 2:
-            self.energy += near_prey.energy
+            self.energy = min(self.energy+near_prey.energy, 600)
             near_prey.alive = False
             if self.energy > self.energy_for_reproducing:
                 self.reproducing = True

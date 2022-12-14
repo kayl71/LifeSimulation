@@ -1,13 +1,10 @@
 import pygame as pg
-import random
 
 import creatures
 import display
 import food_manager
 import genome_manager
 import menus
-
-#random.seed(100)
 
 
 class Core:
@@ -23,7 +20,7 @@ class Core:
         pg.init()
         pg.display.set_caption('Life Simulation')
 
-        self.screen_width = 1000
+        self.screen_width = 750
         self.screen_height = 750
 
         self.screen = pg.display.set_mode((self.screen_width, self.screen_height))
@@ -38,12 +35,10 @@ class Core:
         """
 
         self.running = False
-
         self.camera = display.Camera(self.screen_width // 2, self.screen_height // 2)
 
         self.fullscreen_menu = menus.FullScreenMenu(self.screen, self.screen_width, self.screen_height)
         self.fs_menu = self.fullscreen_menu.initialize()
-
         self.small_menu = menus.SmallMenu(self.screen, self.screen_width, self.screen_height)
         self.open_sm_menu = self.small_menu.open_button()
         self.sm_menu = self.small_menu.initialize()
@@ -51,11 +46,8 @@ class Core:
         while not self.fullscreen_menu.sim_running:
             self.handle_events(pg.event.get(), self.fs_menu, self.open_sm_menu, self.sm_menu)
 
-        self.area_width = self.fullscreen_menu.varset.get_value('area_w')
-        self.area_height = self.fullscreen_menu.varset.get_value('area_h')
-
-        genome_manager.AreaParameters.AREA_WIDTH = self.area_width
-        genome_manager.AreaParameters.AREA_HEIGHT = self.area_height
+        self.area_size = self.fullscreen_menu.varset.get_value('area_s')
+        genome_manager.AreaParameters.AREA_SIZE = self.area_size
 
         self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'),
                                              self.fullscreen_menu.varset.get_value('food_speed'),
@@ -75,23 +67,24 @@ class Core:
         UPS = 60  # Update Per Second
 
         self.food.start(pg.time.get_ticks())
+
         while self.alive:
             self.handle_events(pg.event.get(), self.fs_menu, self.open_sm_menu, self.sm_menu)
             time_now = pg.time.get_ticks()
 
-            if time_now - time_last_update > 1000 / UPS:
+            if self.fullscreen_menu.sim_running and time_now - time_last_update > 1000 / UPS:
                 self.render()
-                self.camera.move(self.screen_width, self.screen_height, self.area_width, self.area_height)
+                self.camera.move(self.screen_width, self.screen_height, self.area_size)
                 self.small_menu.run_open_button()
                 self.small_menu.run_menu()
-                if self.small_menu.sim_running and self.fullscreen_menu.sim_running:
-                    self.food.update(time_now)
+                if self.small_menu.sim_running:
+                    self.food.update(time_now, time_last_update)
                     self.update((time_now - time_last_update) / 1000)
-
                 time_last_update = time_now
 
             if not self.small_menu.sim_existing:
                 self.start_or_restart()
+                time_last_update = pg.time.get_ticks()
         pg.quit()
 
     def handle_events(self, events, fs_menu, open_sm_menu, sm_menu):
@@ -118,14 +111,14 @@ class Core:
                 if event.button == 4:
                     self.camera.scale_plus()
                 elif event.button == 5:
-                    self.camera.scale_minus(self.screen_width, self.screen_height, self.area_width, self.area_height)
+                    self.camera.scale_minus(self.screen_width, self.screen_height, self.area_size)
 
     def render(self):
         """
         Отрисовка всех объектов на экран
         """
         display.render(self.screen, self.creatures.get(), self.food, self.camera,
-                       self.screen_width, self.screen_height, self.area_width, self.area_height)
+                       self.screen_width, self.screen_height, self.area_size)
 
     def update(self, delta_time):
         """

@@ -10,8 +10,8 @@ class Cell:
         Конструктор класса Cell.
         """
 
-        self.POS = -1000
-        self.SIZE = 2048
+        self.POS = -genome_manager.AreaParameters.AREA_SIZE/2
+        self.SIZE = genome_manager.AreaParameters.AREA_SIZE
         self.DEPTH_MAX = 30
         self.MAP = []
         for i in range(self.DEPTH_MAX):
@@ -144,29 +144,30 @@ class FoodManager:
         self.food_size = 5
 
         self.last_time_food_add = -self.time_add * count_food_start
-        self.update(self.time_add * count_food_start)
+        self.update(self.time_add * count_food_start, 0)
 
     def add_food(self):
         """
         Добавляет еду в случайную точку зоны действий.
         """
-        self.food.add(random.randint(-genome_manager.AreaParameters.AREA_WIDTH // 2,
-                                     genome_manager.AreaParameters.AREA_WIDTH // 2),
-                      random.randint(-genome_manager.AreaParameters.AREA_HEIGHT // 2,
-                                     genome_manager.AreaParameters.AREA_HEIGHT // 2))
+        self.food.add(random.randint(-genome_manager.AreaParameters.AREA_SIZE // 2,
+                                     genome_manager.AreaParameters.AREA_SIZE // 2),
+                      random.randint(-genome_manager.AreaParameters.AREA_SIZE // 2,
+                                     genome_manager.AreaParameters.AREA_SIZE // 2))
         self.len_food += 1
 
-    def update(self, time_now):
+    def update(self, time_now, last_time):
         """
         Добавляет новую еду, если прошло достаточно времени с последнего добавления.
 
         :param time_now: текущее время.
+        :param last_time: время последнего добавления.
         """
 
-        count_food_add = int((time_now - self.last_time_food_add) // self.time_add)
+        count_food_add = int((time_now - last_time) // self.time_add)
         for i in range(min(count_food_add, self.max_count_food - self.len_food)):
             self.add_food()
-        self.last_time_food_add += count_food_add * self.time_add
+        self.last_time_food_add = time_now
 
     def get_near_food(self, point):
         """
