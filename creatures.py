@@ -4,29 +4,34 @@ import genome_manager
 
 
 class Creature:
-
-    TIME_ALIVE = 30
-    TIME_GROW_UP = 3
-    ENERGY_FOR_REPRODUCING = 200
     IS_AGING = False
 
-
-    def __init__(self, size, speed, color, x=0, y=0, is_baby=False, energy=100, direction=0):
+    def __init__(self, size, speed, color, x=0, y=0, is_baby=False, energy=100, direction=0,
+                 alive=True, reproducing=False, time_alive=0, max_time_alive=30,
+                 time_to_grow_up=3, energy_for_reproducing=200):
         """
         Конструктор класса 'Creature'.
+
         :param size: размер животного (радиус круга или сторона прямоугольника).
         :param speed: скорость перемещения животного по зоне действий.
         :param color: цвет животного.
         :param x: горизонтальная координата животного.
         :param y: вертикальная координата животного.
-        :param direction: направление движения животного.
-        :param is_baby: является ли ребенком
+        :param is_baby: является ли ребенком.
         :param energy: запас энергии животного. Если равен нулю, то животное умирает.
+        :param direction: направление движения животного.
+        :param alive: живо ли животное.
+        :param reproducing: размножается ли животное.
+        :param time_alive: время жизни животного.
+        :param max_time_alive: максимально возможное время жизни животного.
+        :param time_to_grow_up: время, в течение которого новое животное не двигается.
+        :param energy_for_reproducing: энергия, необходимая для размножения.
         """
-        self.alive = True
+
+        self.alive = alive
         self.is_baby = is_baby
-        self.reproducing = False
-        self.time_alive = 0
+        self.reproducing = reproducing
+        self.time_alive = time_alive
         self.energy = energy
         self.x = x
         self.y = y
@@ -35,18 +40,22 @@ class Creature:
         self.color = color
         self.direction = direction
         self.energy_loss = genome_manager.get_energy_loss(self.size, self.speed)
+        self.max_time_alive = max_time_alive
+        self.time_to_grow_up = time_to_grow_up
+        self.energy_for_reproducing = energy_for_reproducing
 
-    def update(self, dt, food, near_creature=None):
+    def update(self, dt, food):
         """
         Обновляет состояние животного.
         :param dt: отрезок времени, задающий частоту обновления состояния.
         :param food: еда, которую животное может поглотить.
         """
+
         self.time_alive += dt
         if self.is_baby:
-            self.is_baby = self.time_alive < self.TIME_GROW_UP
+            self.is_baby = self.time_alive < self.time_to_grow_up
             return
-        if self.IS_AGING and self.time_alive > self.TIME_ALIVE:
+        if self.IS_AGING and self.time_alive > self.max_time_alive:
             self.alive = False
 
         self.x += self.speed * math.cos(math.radians(self.direction)) * dt
@@ -61,7 +70,7 @@ class Creature:
         if (point[0] - self.x) ** 2 + (point[1] - self.y) ** 2 <= (self.size + food.food_size) ** 2:
             food.eat(point)
             self.energy += 20
-            if self.energy > self.ENERGY_FOR_REPRODUCING:
+            if self.energy > self.energy_for_reproducing:
                 self.reproducing = True
         else:
             self.move_to(point[0], point[1], dt)
@@ -108,6 +117,7 @@ class Creature:
         :param y: координата y точки.
         :param dt: отрезок времени, задающий частоту обновления состояния.
         """
+
         X, Y = self.x - x, self.y - y
         k = 1
         if Y > 0:
@@ -122,17 +132,18 @@ class Creature:
 
 
 class Hunter(Creature):
-    def update(self, dt, near_prey=None):
+    def hunter_update(self, dt, near_prey=None):
         """
         Обновляет состояние животного.
         :param dt: отрезок времени, задающий частоту обновления состояния.
-        :param near_creature: ближайшее животное
+        :param near_prey: ближайшая жертва
         """
+
         self.time_alive += dt
         if self.is_baby:
-            self.is_baby = self.time_alive < self.TIME_GROW_UP
+            self.is_baby = self.time_alive < self.time_to_grow_up
             return
-        if self.IS_AGING and self.time_alive > self.TIME_ALIVE:
+        if self.IS_AGING and self.time_alive > self.max_time_alive:
             self.alive = False
 
         self.x += self.speed * math.cos(math.radians(self.direction)) * dt
@@ -149,7 +160,7 @@ class Hunter(Creature):
         if (point[0] - self.x) ** 2 + (point[1] - self.y) ** 2 <= (self.size + near_prey.size) ** 2:
             self.energy += near_prey.energy
             near_prey.alive = False
-            if self.energy > self.ENERGY_FOR_REPRODUCING:
+            if self.energy > self.energy_for_reproducing:
                 self.reproducing = True
         else:
             self.move_to(point[0], point[1], dt)
@@ -157,17 +168,18 @@ class Hunter(Creature):
 
 
 class Prey(Creature):
-    def update(self, dt, food):
+    def prey_update(self, dt, food):
         """
         Обновляет состояние животного.
         :param dt: отрезок времени, задающий частоту обновления состояния.
         :param food: еда, которую животное может поглотить.
         """
+
         self.time_alive += dt
         if self.is_baby:
-            self.is_baby = self.time_alive < self.TIME_GROW_UP
+            self.is_baby = self.time_alive < self.time_to_grow_up
             return
-        if self.IS_AGING and self.time_alive > self.TIME_ALIVE:
+        if self.IS_AGING and self.time_alive > self.max_time_alive:
             self.alive = False
 
         self.x += self.speed * math.cos(math.radians(self.direction)) * dt
@@ -184,7 +196,7 @@ class Prey(Creature):
         if (point[0] - self.x) ** 2 + (point[1] - self.y) ** 2 <= (self.size + food.food_size) ** 2:
             food.eat(point)
             self.energy += 20
-            if self.energy > self.ENERGY_FOR_REPRODUCING:
+            if self.energy > self.energy_for_reproducing:
                 self.reproducing = True
         else:
             self.move_to(point[0], point[1], dt)
