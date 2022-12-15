@@ -101,7 +101,7 @@ class Camera:
         """
         Увеличивает масштаб изображения.
         """
-        self.scale = self.scale * 1.3   # 1.3 - 'магическое' число, если есть смысл, можно параметризовать
+        self.scale = self.scale * 1.3
 
     # Отдаление камеры
     def scale_minus(self, screen_width, screen_height, area_size):
@@ -170,3 +170,7 @@ class Camera:
 
                 elif (old_y + screen_height / 2 / old_scale) == area_size / 2:
                     self.y = (area_size - screen_height / self.scale) / 2
+
+
+if __name__ == "__main__":
+    print("This module is not for direct call!")

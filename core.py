@@ -1,10 +1,8 @@
 import pygame as pg
 
-import creatures
-import display
-import food_manager
-import genome_manager
-import menus
+from Source.Code_source.Creatures import creatures
+from Source.Code_source.Managers import genome_manager, food_manager
+from Source.Code_source.Visuals import menus, display
 
 
 class Core:
@@ -47,7 +45,7 @@ class Core:
             self.handle_events(pg.event.get(), self.fs_menu, self.open_sm_menu, self.sm_menu)
 
         self.area_size = self.fullscreen_menu.varset.get_value('area_s')
-        genome_manager.AreaParameters.AREA_SIZE = self.area_size
+        food_manager.AreaParameters.AREA_SIZE = self.area_size
 
         self.food = food_manager.FoodManager(self.fullscreen_menu.varset.get_value('max_food'),
                                              self.fullscreen_menu.varset.get_value('food_speed'),

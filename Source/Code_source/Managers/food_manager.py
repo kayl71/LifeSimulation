@@ -1,7 +1,9 @@
 import math
 import random
 
-import genome_manager
+
+class AreaParameters:
+    AREA_SIZE = 0
 
 
 class Cell:
@@ -10,8 +12,8 @@ class Cell:
         Конструктор класса Cell.
         """
 
-        self.POS = -genome_manager.AreaParameters.AREA_SIZE/2
-        self.SIZE = genome_manager.AreaParameters.AREA_SIZE
+        self.POS = -AreaParameters.AREA_SIZE / 2
+        self.SIZE = AreaParameters.AREA_SIZE
         self.DEPTH_MAX = 30
         self.MAP = []
         for i in range(self.DEPTH_MAX):
@@ -150,10 +152,10 @@ class FoodManager:
         """
         Добавляет еду в случайную точку зоны действий.
         """
-        self.food.add(random.randint(-genome_manager.AreaParameters.AREA_SIZE // 2,
-                                     genome_manager.AreaParameters.AREA_SIZE // 2),
-                      random.randint(-genome_manager.AreaParameters.AREA_SIZE // 2,
-                                     genome_manager.AreaParameters.AREA_SIZE // 2))
+        self.food.add(random.randint(-AreaParameters.AREA_SIZE // 2,
+                                     AreaParameters.AREA_SIZE // 2),
+                      random.randint(-AreaParameters.AREA_SIZE // 2,
+                                     AreaParameters.AREA_SIZE // 2))
         self.len_food += 1
 
     def update(self, time_now, last_time):
@@ -201,3 +203,7 @@ class FoodManager:
         :param time_now:
         """
         self.last_time_food_add = time_now
+
+
+if __name__ == "__main__":
+    print("This module is not for direct call!")

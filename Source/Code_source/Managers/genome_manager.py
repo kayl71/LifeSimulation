@@ -1,10 +1,7 @@
 import random
-import creatures
-import food_manager
 
-
-class AreaParameters:
-    AREA_SIZE = 0
+from Source.Code_source.Managers import food_manager
+from Source.Code_source.Creatures import creatures
 
 
 def make_creature(type_id_creature):
@@ -18,13 +15,17 @@ def make_creature(type_id_creature):
 
     if type_id_creature == 0:
         return creatures.Prey(size=random.randint(10, 20), speed=random.randint(40, 60), color=(255, 255, 255),
-                              x=random.randint(-AreaParameters.AREA_SIZE // 2, AreaParameters.AREA_SIZE // 2),
-                              y=random.randint(-AreaParameters.AREA_SIZE // 2, AreaParameters.AREA_SIZE // 2))
+                              x=random.randint(-food_manager.AreaParameters.AREA_SIZE // 2,
+                                               food_manager.AreaParameters.AREA_SIZE // 2),
+                              y=random.randint(-food_manager.AreaParameters.AREA_SIZE // 2,
+                                               food_manager.AreaParameters.AREA_SIZE // 2))
 
     elif type_id_creature == 1:
         return creatures.Hunter(size=random.randint(10, 20), speed=random.randint(40, 60), color=(0, 0, 255),
-                                x=random.randint(-AreaParameters.AREA_SIZE // 2, AreaParameters.AREA_SIZE // 2),
-                                y=random.randint(-AreaParameters.AREA_SIZE // 2, AreaParameters.AREA_SIZE // 2))
+                                x=random.randint(-food_manager.AreaParameters.AREA_SIZE // 2,
+                                                 food_manager.AreaParameters.AREA_SIZE // 2),
+                                y=random.randint(-food_manager.AreaParameters.AREA_SIZE // 2,
+                                                 food_manager.AreaParameters.AREA_SIZE // 2))
 
 
 def create_population(length: int, cr_type: int):
@@ -154,3 +155,7 @@ class CreatureManager:
         for creature_info in self.creatures.get():
             creature_list.append(creature_info[2])
         return creature_list
+
+
+if __name__ == "__main__":
+    print("This module is not for direct call!")

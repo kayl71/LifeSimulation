@@ -1,6 +1,6 @@
 import math
 
-import genome_manager
+from Source.Code_source.Managers import genome_manager
 
 
 class Creature:
@@ -201,3 +201,7 @@ class Prey(Creature):
         else:
             self.move_to(point[0], point[1], dt)
         self.energy -= self.energy_loss * dt
+
+
+if __name__ == "__main__":
+    print("This module is not for direct call!")

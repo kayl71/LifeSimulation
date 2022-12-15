@@ -38,10 +38,10 @@ class FullScreenMenu:
 
         thorpy.set_theme('human')
 
-        pygame_logo = thorpy.Image('Data_source/Pygame_logo.svg', colorkey=(0, 0, 0))
+        pygame_logo = thorpy.Image('Source/Data_source/Pictures/Pygame_logo.svg', colorkey=(0, 0, 0))
         pygame_logo.set_size((18 * self.width / 70, 6 * self.height / 70))
 
-        thorpy_logo = thorpy.Image('Data_source/Thorpy_logo.png', colorkey=(0, 0, 0))
+        thorpy_logo = thorpy.Image('Source/Data_source/Pictures/Thorpy_logo.png', colorkey=(0, 0, 0))
         thorpy_logo.set_size((8 * self.width / 70, self.height / 7))
 
         pow_by_logos = thorpy.make_group([pygame_logo, thorpy_logo], mode='h')
@@ -51,7 +51,7 @@ class FullScreenMenu:
         pow_by = thorpy.make_group([pow_by_text, pow_by_logos], mode='v')
         pow_by.set_topleft([self.width - 27 * self.width / 70, self.height - 125 * self.height / 700])
 
-        team_logo = thorpy.Image('Data_source/Team_logo.png', colorkey=(0, 0, 0))
+        team_logo = thorpy.Image('Source/Data_source/Pictures/Team_logo.png', colorkey=(0, 0, 0))
         team_logo.set_size((18 * self.width / 70, 95 * self.height / 700))
         made_by_text = thorpy.make_text("Made by", font_size=int(20 * (self.height + self.width) / 2 / 700),
                                         font_color=(255, 255, 255))
@@ -59,7 +59,7 @@ class FullScreenMenu:
         made_by = thorpy.make_group([made_by_text, team_logo], mode='v')
         made_by.set_topleft([10, self.height - 135 * self.height / 700])
 
-        bugs = thorpy.Image('Data_source/Bugs.png', colorkey=(0, 0, 0))
+        bugs = thorpy.Image('Source/Data_source/Pictures/Bugs.png', colorkey=(0, 0, 0))
         bugs.set_size((6 * self.width / 7, 3 * self.height / 7))
         bugs.center()
         bugs.set_topleft((None, 2 * self.height / 70))
@@ -188,3 +188,7 @@ class SmallMenu:
         if self.running:
             self.box.blit()
             self.box.update()
+
+
+if __name__ == "__main__":
+    print("This module is not for direct call!")
