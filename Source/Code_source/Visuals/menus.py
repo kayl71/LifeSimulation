@@ -146,7 +146,7 @@ class SmallMenu:
         """
 
         options_button = thorpy.make_button('Options', func=self.start_menu)
-        self.small_box = thorpy.Box(elements=[options_button])
+        self.small_box = thorpy.Box(elements=[options_button])  # Создаётся вне инита, тк нельзя не передать элементы
         menu = thorpy.Menu(self.small_box)
         self.small_box.set_topleft((0, 0))
         for element in menu.get_population():
@@ -171,7 +171,7 @@ class SmallMenu:
         button_pause = thorpy.make_button("Pause", func=self.stop_sim)
         button_play = thorpy.make_button("Play", func=self.resume)
 
-        self.box = thorpy.Box(elements=[
+        self.box = thorpy.Box(elements=[   # Создаётся вне инита, тк нельзя не передать элементы
             button_pause,
             button_play,
             button_end], size=(80 * self.screen_width / 700, 100 * self.screen_height / 700))
