@@ -30,9 +30,19 @@ class Core:
         Вынесено в отдельную функцию, так как может понадобиться полный сброс параметров
         этих атрибутов в ходе работы программы, что благодаря этому может быть сделано
         вызовом единственной функции.
+
+        Создаваемые атрибуты:
+            camera - объект класса камеры
+            fullscreen_menu - объект класса полноэкранного меню
+            fs_menu - интерактивное полноэкранное меню
+            small_menu - объект класса маленького меню
+            open_sm_menu - интерактивное меню, состоящее из одной кнопки открытие маленького меню
+            sm_menu - интерактивное маленькое меню, появляющееся во время протекания симуляции
+            area_size - размер зоны действий
+            food - объект класса FoodManager
+            creatures - объект класса CreatureManager
         """
 
-        self.running = False
         self.camera = display.Camera(self.screen_width // 2, self.screen_height // 2)
 
         self.fullscreen_menu = menus.FullScreenMenu(self.screen, self.screen_width, self.screen_height)
@@ -75,12 +85,14 @@ class Core:
                 self.camera.move(self.screen_width, self.screen_height, self.area_size)
                 self.small_menu.run_open_button()
                 self.small_menu.run_menu()
+
                 if self.small_menu.sim_running:
                     self.food.update(time_now, time_last_update)
                     self.update((time_now - time_last_update) / 1000)
                 time_last_update = time_now
 
             if not self.small_menu.sim_existing:
+                self.running = False
                 self.start_or_restart()
                 time_last_update = pg.time.get_ticks()
         pg.quit()

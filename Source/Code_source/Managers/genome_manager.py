@@ -114,7 +114,7 @@ class CreatureManager:
                 hunters.remove(hunter)
             else:
                 goal = self.creatures.search(hunter.x, hunter.y, True)
-                if not goal is None:
+                if goal is not None:
                     goal = goal[2]
                 hunter.hunter_update(dt, goal)
                 if hunter.is_reproducing():
