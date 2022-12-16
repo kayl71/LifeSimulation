@@ -24,12 +24,10 @@ class Cell:
 
     def add(self, x, y, obj=None):
         """
-
-        :param x:
-        :param y:
-        :param obj:
-
-        :return:
+        Добавляет объект на карту
+        :param x: координата точки x
+        :param y: координата точки y
+        :param obj: объект с этими координатами
         """
 
         xi = self.__get_x_index(x)
@@ -39,12 +37,12 @@ class Cell:
 
     def search(self, x, y, without_it=False):
         """
+        Ищет ближайший объект к точке в чанке, где точка, и в соседних чанках
+        :param x: координата точки x
+        :param y: координата точки x
+        :param without_it: флаг: нужно ли исключить объект с теми же координатами из поиска
 
-        :param x:
-        :param y:
-        :param without_it:
-
-        :return:
+        :return: список: координаты объекта и сам объект
         """
         xi = self.__get_x_index(x)
         yi = self.__get_y_index(y)
@@ -65,32 +63,32 @@ class Cell:
 
     def __get_x_index(self, x):
         """
+        Возвращает индекс столбца, в котором находится точка
+        :param x: координата точки x
 
-        :param x:
-
-        :return:
+        :return: индекс столбца
         """
         return math.ceil((x - self.POS) / self.SIZE) - 1
 
     def __get_y_index(self, y):
         """
+        Возвращает индекс строки, в котором находится точка
+        :param y: координата точки y
 
-        :param y:
-
-        :return:
+        :return: индекс строки
         """
         return math.ceil((y - self.POS) / self.SIZE) - 1
 
     def __search(self, x, y, xi, yi, without_it=False):
         """
+        Ищет ближайший объект в точке в заданном чанке
+        :param x: координата точки x
+        :param y: координата точки y
+        :param xi: индекс столбца чанка
+        :param yi: индекс строки чанка
+        :param without_it: флаг: нужно ли исключить объект с теми же координатами из поиска
 
-        :param x:
-        :param y:
-        :param xi:
-        :param yi:
-        :param without_it:
-
-        :return:
+        :return: список: координата объекта, сам объект и расстояние от точки до объекта в квадрате
         """
 
         min_v, min_p = 9999999, None
@@ -105,8 +103,8 @@ class Cell:
 
     def get(self):
         """
-
-        :return:
+        Возвращает список всех объектов
+        :return: список объектов
         """
         list_get = []
         for i in range(self.DEPTH_MAX):
@@ -116,12 +114,10 @@ class Cell:
 
     def remove(self, x, y, obj=None):
         """
-
-        :param x:
-        :param y:
-        :param obj:
-
-        :return:
+        Удаляет объект с координатами x,y с карты. Если obj не имеет координаты x,y, то удаления не будет
+        :param x: координата x объекта
+        :param y: координата y объекта
+        :param obj: объект
         """
         xi = self.__get_x_index(x)
         yi = self.__get_y_index(y)
@@ -199,8 +195,8 @@ class FoodManager:
 
     def start(self, time_now):
         """
-
-        :param time_now:
+        Запускает генерацию еды
+        :param time_now: нынешнее время
         """
         self.last_time_food_add = time_now
 

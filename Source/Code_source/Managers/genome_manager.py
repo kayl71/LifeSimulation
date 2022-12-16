@@ -97,11 +97,9 @@ class CreatureManager:
 
     def update(self, dt, food):
         """
-
-        :param dt:
-        :param food:
-
-        :return:
+        Изменяет параметры существ и удаляет умерших
+        :param dt: время, прошедшее с последней итерации
+        :param food: список еды на карте
         """
 
         hunters = []
@@ -137,10 +135,8 @@ class CreatureManager:
 
     def _replace_creatures(self, new_creatures):
         """
-
-        :param new_creatures:
-
-        :return:
+        Меняет список существ на новый. Нужен, т.к. существа меняют чанки во время движения
+        :param new_creatures: список новых существ
         """
         self.creatures = food_manager.Cell()
         for creature in new_creatures:
@@ -148,8 +144,8 @@ class CreatureManager:
 
     def get(self):
         """
-
-        :return:
+        Возвращает список всех существ
+        :return: список существ
         """
         creature_list = []
         for creature_info in self.creatures.get():
